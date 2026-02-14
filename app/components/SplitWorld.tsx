@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import styles from './SplitWorld.module.css';
 
 type WorldState = 'default' | 'photo-hover' | 'dev-hover' | 'entering-photo' | 'entering-dev';
@@ -173,8 +174,25 @@ export function SplitWorld() {
 
           {/* Stacked photo cards */}
           <div className={styles.photoCards}>
-            <div className={styles.pcardShadow} />
+            <div className={styles.pcardShadow}>
+              <Image
+                src="/portrait-photo-two.jpg"
+                alt="Portrait photograph"
+                fill
+                quality={100}
+                style={{ objectFit: 'cover' }}
+                sizes="26vw"
+              />
+            </div>
             <div className={styles.pcardMain}>
+              <Image
+                src="/portrait-photo.jpg"
+                alt="Portrait photograph"
+                fill
+                quality={100}
+                style={{ objectFit: 'cover' }}
+                sizes="26vw"
+              />
               <div className={styles.pcardMeta}>
                 <span className={styles.pcardMetaTitle}>Series I</span>
                 <span className={styles.pcardMetaNum}>01/12</span>

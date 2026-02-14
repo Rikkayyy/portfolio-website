@@ -251,30 +251,33 @@
 /* Stacked photo cards */
 .photoCards {
   position: absolute;
-  right: 7%;
+  right: 5%;
   bottom: 9%;
-  width: 44%;
+  width: 26%;
 }
 
 .pcardShadow {
   position: absolute;
   width: 100%;
   aspect-ratio: 2 / 3;
-  background: linear-gradient(155deg, #1e1e1e 0%, #141414 60%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transform: rotate(4deg) translate(14px, 10px);
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transform: rotate(4deg) translate(10px, 8px);
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+  opacity: 0.7;
 }
 
 .sidePhoto:hover .pcardShadow {
-  transform: rotate(4deg) translate(20px, 14px);
+  transform: rotate(4deg) translate(14px, 11px);
+  opacity: 0.85;
 }
 
 .pcardMain {
   position: relative;
   width: 100%;
   aspect-ratio: 2 / 3;
-  background: linear-gradient(135deg, #2c2c2c 0%, #181818 45%, #242424 100%);
+  background: #181818;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transform: rotate(-2deg);
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.55s;
@@ -283,36 +286,26 @@
 
 .sidePhoto:hover .pcardMain {
   transform: rotate(0deg);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), -8px 0 0 #ff3500;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), -5px 0 0 #ff3500;
 }
 
-.pcardMain::before {
-  content: '';
-  position: absolute;
-  top: 18%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 44%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3c3c3c, #222);
-}
-
+/* Bottom scrim so meta text stays readable over the photo */
 .pcardMain::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 42%;
-  background: linear-gradient(180deg, transparent, #141414 85%);
+  height: 38%;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.75) 100%);
+  z-index: 1;
 }
 
 .pcardMeta {
   position: absolute;
-  bottom: 0.65rem;
-  left: 0.65rem;
-  right: 0.65rem;
+  bottom: 0.55rem;
+  left: 0.55rem;
+  right: 0.55rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -321,18 +314,18 @@
 
 .pcardMetaTitle {
   font-family: var(--font-syne), sans-serif;
-  font-size: 0.42rem;
+  font-size: 0.38rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .pcardMetaNum {
   font-family: var(--font-syne), sans-serif;
-  font-size: 0.48rem;
+  font-size: 0.4rem;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.25);
 }
 
 /* Photo content — left-aligned */
