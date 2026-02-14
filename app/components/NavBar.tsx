@@ -2,14 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface NavBarProps {
   className?: string;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({ className = '' }) => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  if (pathname === '/') return null;
 
   useEffect(() => {
     const handleScroll = () => {
