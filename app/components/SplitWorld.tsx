@@ -115,7 +115,7 @@ export function SplitWorld() {
         className={styles.centerName}
         style={{ opacity: centerNameOp, transition: 'opacity 0.4s' }}
       >
-        <span className={styles.centerNameText}>Rikki</span>
+        <span className={styles.centerNameText}>Rikki Casupanan</span>
       </div>
 
       {/* Hint */}
