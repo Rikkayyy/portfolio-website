@@ -116,9 +116,40 @@
   margin: 0;
 }
 
+/* ── ARTIST STATEMENT ── */
+.statement {
+  padding: 5rem 2.5rem;
+  max-width: 640px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statementLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.16);
+  margin: 0 0 1.8rem;
+}
+
+.statementText {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.36);
+  margin: 0;
+}
+
 /* ── TABLE OF CONTENTS ── */
 .toc {
   padding: 3.5rem 2.5rem 0;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .tocLabel {

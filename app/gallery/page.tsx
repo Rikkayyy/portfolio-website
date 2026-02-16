@@ -16,15 +16,15 @@ const publications = [
       { src: '/portrait-photo-two.jpg', alt: 'Portrait' },
     ],
   },
-  // {
-  //   id: 'series-ii',
-  //   num: '02',
-  //   title: 'Series II',
-  //   year: '2025',
-  //   photos: [
-  //     { src: '/your-photo.jpg', alt: '...' },
-  //   ],
-  // },
+  {
+    id: 'series-ii',
+    num: '02',
+    title: 'Series II',
+    year: '2025',
+    photos: [
+      { src: '/your-photo.jpg', alt: '...' },
+    ],
+  },
 ];
 
 export default function GalleryPage() {
@@ -60,6 +60,18 @@ export default function GalleryPage() {
               <span className={styles.tocArrow}>→</span>
             </a>
           ))}
+        </section>
+
+        {/* Artist statement */}
+        <section className={styles.statement}>
+          <p className={styles.statementLabel}>Statement</p>
+          <p className={styles.statementText}>
+            {/* Replace this with your own words */}
+            A visual journal exploring light, space, and the human form.
+            Each series is a meditation on a singular subject — an attempt
+            to distill the complexity of a moment into something essential
+            and still.
+          </p>
         </section>
 
         {/* Red accent divider */}
