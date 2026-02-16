@@ -1,0 +1,320 @@
+/* Smooth anchor-link scrolling */
+:global(html) {
+  scroll-behavior: smooth;
+}
+
+/* ── PAGE ── */
+.page {
+  min-height: 100vh;
+  background: #080808;
+  color: #f2f2f2;
+}
+
+/* ── NOISE — matches SplitWorld ── */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.022;
+  mix-blend-mode: overlay;
+}
+
+/* ── FIXED NAV ── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.9rem 2.5rem;
+}
+
+.nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2.5rem;
+  right: 2.5rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.backBtn {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 0.5rem 1rem;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.backBtn:hover {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.navName {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-playfair), serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.navLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.14);
+}
+
+/* ── MAIN ── */
+.main {
+  padding-top: 5.5rem;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  padding: 6rem 2.5rem 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mastheadEyebrow {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: #ff3500;
+  margin: 0 0 1rem;
+}
+
+.mastheadTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(3.5rem, 9vw, 9rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  color: #f2f2f2;
+  margin: 0;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  padding: 3.5rem 2.5rem 0;
+}
+
+.tocLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.16);
+  margin: 0 0 1.8rem;
+}
+
+/* Each TOC entry — entire row is the link */
+.tocRow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 0.25s;
+}
+
+.tocRow:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tocRow:hover {
+  opacity: 1;
+}
+
+.tocNum {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #ff3500;
+  min-width: 1.8rem;
+  flex-shrink: 0;
+}
+
+.tocDash {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.tocTitle {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  flex-shrink: 0;
+}
+
+.tocRule {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tocYear {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.22);
+  flex-shrink: 0;
+}
+
+.tocArrow {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.18);
+  transition: transform 0.25s, color 0.25s;
+  flex-shrink: 0;
+}
+
+.tocRow:hover .tocArrow {
+  transform: translateX(5px);
+  color: #ff3500;
+}
+
+/* ── ACCENT DIVIDER ── */
+.divider {
+  margin: 5rem 2.5rem 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 53, 0, 0.5) 20%,
+    rgba(255, 53, 0, 0.5) 80%,
+    transparent 100%
+  );
+}
+
+/* ── PUBLICATION SECTION ── */
+.section {
+  scroll-margin-top: 5rem;
+  padding: 6rem 0 0;
+}
+
+/* Section header row */
+.sectionHeader {
+  position: relative;
+  padding: 0 2.5rem 3rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  overflow: hidden;
+}
+
+.sectionNum {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #ff3500;
+  flex-shrink: 0;
+}
+
+.sectionMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(2rem, 5vw, 5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  color: #f2f2f2;
+  margin: 0;
+}
+
+.sectionYear {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.16);
+}
+
+/* Ghost number behind header */
+.sectionGhost {
+  position: absolute;
+  right: 2.5rem;
+  bottom: -0.8rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: clamp(5rem, 16vw, 15rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.028);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── TWO-COLUMN PHOTO GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+
+.cell {
+  position: relative;
+  height: 72vh;
+  background: #0f0f0f;
+  overflow: hidden;
+}
+
+/* ── END MARK ── */
+.end {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 5rem 2.5rem 8rem;
+}
+
+.endLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.endLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}

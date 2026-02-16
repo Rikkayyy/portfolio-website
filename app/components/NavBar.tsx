@@ -13,8 +13,6 @@ export const NavBar: React.FC<NavBarProps> = ({ className = '' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  if (pathname === '/') return null;
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -23,6 +21,8 @@ export const NavBar: React.FC<NavBarProps> = ({ className = '' }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (pathname === '/' || pathname === '/gallery') return null;
 
   const navLinks = [
     { name: 'Home', href: '/' },
