@@ -478,6 +478,94 @@
     #040d12;
 }
 
+/* Stacked dev photo cards - mirrored from photo side */
+.devCards {
+  position: absolute;
+  left: 5%;
+  bottom: 9%;
+  width: 26%;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sideDev:hover .devCards {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dcardShadow {
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: #0a1a1f;
+  border: 1px solid rgba(0, 229, 255, 0.08);
+  transform: rotate(-4deg) translate(-10px, 8px);
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+  opacity: 0.7;
+}
+
+.sideDev:hover .dcardShadow {
+  transform: rotate(-4deg) translate(-14px, 11px);
+  opacity: 0.85;
+}
+
+.dcardMain {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: #0a1a1f;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  transform: rotate(2deg);
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.55s;
+  overflow: hidden;
+}
+
+.sideDev:hover .dcardMain {
+  transform: rotate(0deg);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 5px 0 0 #00e5ff;
+}
+
+/* Bottom scrim so meta text stays readable */
+.dcardMain::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38%;
+  background: linear-gradient(180deg, transparent, rgba(4, 13, 18, 0.85) 100%);
+  z-index: 1;
+}
+
+.dcardMeta {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 0.55rem;
+  right: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 2;
+}
+
+.dcardMetaTitle {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.38rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 229, 255, 0.6);
+}
+
+.dcardMetaNum {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.4rem;
+  font-weight: 800;
+  color: rgba(0, 229, 255, 0.3);
+}
+
 .devGrid {
   position: absolute;
   inset: 0;

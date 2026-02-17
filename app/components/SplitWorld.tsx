@@ -235,6 +235,26 @@ export function SplitWorld() {
           <div className={styles.devBgLayer} />
           <div className={styles.devGrid} />
 
+          {/* Stacked dev photo card */}
+          <div className={styles.devCards}>
+            <div className={styles.dcardShadow}>
+            </div>
+            <div className={styles.dcardMain}>
+              <Image
+                src="/portrait-photo-laptop.jpg"
+                alt="Developer workspace"
+                fill
+                quality={100}
+                style={{ objectFit: 'cover' }}
+                sizes="26vw"
+              />
+              <div className={styles.dcardMeta}>
+                <span className={styles.dcardMetaTitle}>Workspace</span>
+                <span className={styles.dcardMetaNum}>01/12</span>
+              </div>
+            </div>
+          </div>
+
           <div className={styles.codeRain}>
             <span className={styles.codeStream}>const build = () =&gt; create() → deploy → iterate → refine →</span>
             <span className={styles.codeStream}>npm run dev → localhost:3000 → hot reload → typescript →</span>
