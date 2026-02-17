@@ -9,89 +9,99 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      // ── Gallery: series / publication ────────────────────────────────────────
+      publications: {
+        Row: {
+          id: string
+          num: string              // display label: '01', '02', ...
+          title: string            // 'Series I', 'Summer 2024', etc.
+          year: string             // '2024'
+          essay: string | null     // prose for the series
+          display_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          num: string
+          title: string
+          year: string
+          essay?: string | null
+          display_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          num?: string
+          title?: string
+          year?: string
+          essay?: string | null
+          display_order?: number
+          created_at?: string
+        }
+      }
+
+      // ── Gallery: individual photos ────────────────────────────────────────────
+      photos: {
+        Row: {
+          id: string
+          publication_id: string
+          image_url: string        // full public URL from Supabase Storage
+          alt: string | null
+          display_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          publication_id: string
+          image_url: string
+          alt?: string | null
+          display_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          publication_id?: string
+          image_url?: string
+          alt?: string | null
+          display_order?: number
+          created_at?: string
+        }
+      }
+
+      // ── Projects ──────────────────────────────────────────────────────────────
       projects: {
         Row: {
           id: string
           title: string
+          year: string             // '2024', '2023', etc.
           description: string
           technologies: string[]
           github_url: string | null
           live_url: string | null
-          image_url: string | null
-          featured: boolean
+          display_order: number
           created_at: string
-          updated_at: string
         }
         Insert: {
           id?: string
           title: string
+          year: string
           description: string
           technologies?: string[]
           github_url?: string | null
           live_url?: string | null
-          image_url?: string | null
-          featured?: boolean
+          display_order?: number
           created_at?: string
-          updated_at?: string
         }
         Update: {
           id?: string
           title?: string
+          year?: string
           description?: string
           technologies?: string[]
           github_url?: string | null
           live_url?: string | null
-          image_url?: string | null
-          featured?: boolean
+          display_order?: number
           created_at?: string
-          updated_at?: string
-        }
-      }
-      photography: {
-        Row: {
-          id: string
-          title: string
-          description: string | null
-          category: string
-          location: string | null
-          camera: string | null
-          lens: string | null
-          settings: string | null
-          image_url: string
-          thumbnail_url: string | null
-          featured: boolean
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          title: string
-          description?: string | null
-          category: string
-          location?: string | null
-          camera?: string | null
-          lens?: string | null
-          settings?: string | null
-          image_url: string
-          thumbnail_url?: string | null
-          featured?: boolean
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          description?: string | null
-          category?: string
-          location?: string | null
-          camera?: string | null
-          lens?: string | null
-          settings?: string | null
-          image_url?: string
-          thumbnail_url?: string | null
-          featured?: boolean
-          created_at?: string
-          updated_at?: string
         }
       }
     }
@@ -105,4 +115,14 @@ export interface Database {
       [_ in never]: never
     }
   }
+}
+
+// ── Convenience row types ─────────────────────────────────────────────────────
+export type Publication = Database['public']['Tables']['publications']['Row']
+export type Photo = Database['public']['Tables']['photos']['Row']
+export type Project = Database['public']['Tables']['projects']['Row']
+
+// Publication with its photos nested (returned by Supabase select with join)
+export type PublicationWithPhotos = Publication & {
+  photos: Photo[]
 }

@@ -1,39 +1,38 @@
 import Image from 'next/image';
 import styles from './Gallery.module.css';
 import { FadeIn } from '../components/FadeIn';
+import { supabase } from '@/lib/supabase';
+import type { PublicationWithPhotos } from '@/types/supabase';
 
-// ── Add publications here ──────────────────────────────────────────────────
-// Each publication is a named series with its own section on the page.
-// The table of contents at the top links to each one automatically.
-const publications = [
-  {
-    id: 'series-i',
-    num: '01',
-    title: 'Series I',
-    year: '2024',
-    // Replace with your own essay or caption for this series
-    essay: `A visual journal exploring light, space, and the human form.
+// ── Artist statement ───────────────────────────────────────────────────────────
+// Replace this with your own words. Shown in the "Statement" section above the
+// gallery series. It stays hardcoded here since it describes you, not a series.
+const STATEMENT = `A visual journal exploring light, space, and the human form.
 Each series is a meditation on a singular subject — an attempt
 to distill the complexity of a moment into something essential
-and still.`,
-    photos: [
-      { src: '/portrait-photo.jpg', alt: 'Portrait' },
-      { src: '/portrait-photo-two.jpg', alt: 'Portrait' },
-    ],
-  },
-  // {
-  //   id: 'series-ii',
-  //   num: '02',
-  //   title: 'Series II',
-  //   year: '2025',
-  //   essay: `Your essay here.`,
-  //   photos: [
-  //     { src: '/your-photo.jpg', alt: '...' },
-  //   ],
-  // },
-];
+and still.`;
 
-export default function GalleryPage() {
+async function getPublications(): Promise<PublicationWithPhotos[]> {
+  const { data, error } = await supabase
+    .from('publications')
+    .select(`
+      *,
+      photos (*)
+    `)
+    .order('display_order')
+    .order('display_order', { referencedTable: 'photos' });
+
+  if (error) {
+    console.error('Failed to fetch publications:', error.message);
+    return [];
+  }
+
+  return (data ?? []) as PublicationWithPhotos[];
+}
+
+export default async function GalleryPage() {
+  const publications = await getPublications();
+
   return (
     <div className={styles.page}>
       <div className={styles.noise} />
@@ -47,33 +46,29 @@ export default function GalleryPage() {
         </header>
 
         {/* Table of contents */}
-        <FadeIn delay={200}>
-          <section className={styles.toc}>
-            <p className={styles.tocLabel}>Contents</p>
-            {publications.map((pub) => (
-              <a key={pub.id} href={`#${pub.id}`} className={styles.tocRow}>
-                <span className={styles.tocNum}>{pub.num}</span>
-                <span className={styles.tocDash}>—</span>
-                <span className={styles.tocTitle}>{pub.title}</span>
-                <span className={styles.tocRule} />
-                <span className={styles.tocYear}>{pub.year}</span>
-                <span className={styles.tocArrow}>→</span>
-              </a>
-            ))}
-          </section>
-        </FadeIn>
+        {publications.length > 0 && (
+          <FadeIn delay={200}>
+            <section className={styles.toc}>
+              <p className={styles.tocLabel}>Contents</p>
+              {publications.map((pub) => (
+                <a key={pub.id} href={`#${pub.id}`} className={styles.tocRow}>
+                  <span className={styles.tocNum}>{pub.num}</span>
+                  <span className={styles.tocDash}>—</span>
+                  <span className={styles.tocTitle}>{pub.title}</span>
+                  <span className={styles.tocRule} />
+                  <span className={styles.tocYear}>{pub.year}</span>
+                  <span className={styles.tocArrow}>→</span>
+                </a>
+              ))}
+            </section>
+          </FadeIn>
+        )}
 
         {/* Artist statement */}
         <FadeIn delay={350}>
           <section className={styles.statement}>
             <p className={styles.statementLabel}>Statement</p>
-            <p className={styles.statementText}>
-              {/* Replace this with your own words */}
-              A visual journal exploring light, space, and the human form.
-              Each series is a meditation on a singular subject — an attempt
-              to distill the complexity of a moment into something essential
-              and still.
-            </p>
+            <p className={styles.statementText}>{STATEMENT}</p>
           </section>
         </FadeIn>
 
@@ -81,6 +76,13 @@ export default function GalleryPage() {
         <FadeIn delay={450}>
           <div className={styles.divider} />
         </FadeIn>
+
+        {/* Empty state */}
+        {publications.length === 0 && (
+          <p style={{ padding: '4rem 2.5rem', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-playfair)', fontStyle: 'italic' }}>
+            No series published yet.
+          </p>
+        )}
 
         {/* Publication sections */}
         {publications.map((pub) => (
@@ -93,21 +95,21 @@ export default function GalleryPage() {
                   <span className={styles.textGhost} aria-hidden="true">{pub.num}</span>
                   <span className={styles.textNum}>{pub.num}</span>
                   <h2 className={styles.textTitle}>{pub.title}</h2>
-                  <p className={styles.textEssay}>{pub.essay}</p>
+                  {pub.essay && <p className={styles.textEssay}>{pub.essay}</p>}
                   <span className={styles.textYear}>{pub.year}</span>
                 </div>
 
                 {/* Photos column */}
                 <div className={styles.photosCol}>
-                  {pub.photos.map((photo, i) => (
-                    <div key={i} className={styles.cell}>
+                  {pub.photos.map((photo) => (
+                    <div key={photo.id} className={styles.cell}>
                       <Image
-                        src={photo.src}
-                        alt={photo.alt}
+                        src={photo.image_url}
+                        alt={photo.alt ?? ''}
                         fill
-                        quality={100}
+                        quality={90}
                         style={{ objectFit: 'cover' }}
-                        sizes="50vw"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
                   ))}
