@@ -22,7 +22,7 @@ export const NavBar: React.FC<NavBarProps> = ({ className = '' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (pathname === '/' || pathname === '/gallery') return null;
+  if (pathname === '/' || pathname === '/gallery' || pathname === '/projects') return null;
 
   const navLinks = [
     { name: 'Home', href: '/' },
