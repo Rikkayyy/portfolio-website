@@ -1,0 +1,167 @@
+/* ── PAGE ── */
+.page {
+  min-height: 100vh;
+  background: #080808;
+  color: #f2f2f2;
+}
+
+/* ── NOISE ── */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.022;
+  mix-blend-mode: overlay;
+}
+
+/* ── MAIN — centered single column ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 10rem 2.5rem 8rem;
+}
+
+/* ── EYEBROW ── */
+.eyebrow {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: #ff3500;
+  margin: 0 0 1.2rem;
+}
+
+/* ── HEADING ── */
+.heading {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: #f2f2f2;
+  margin: 0 0 3.5rem;
+}
+
+/* ── BIO ── */
+.bio {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.52);
+  margin: 0 0 5rem;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 53, 0, 0.4) 30%,
+    rgba(255, 53, 0, 0.4) 70%,
+    transparent 100%
+  );
+  margin: 0 0 5rem;
+}
+
+/* ── SECTION ── */
+.section {
+  margin: 0 0 4rem;
+}
+
+.sectionLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+  margin: 0 0 2rem;
+}
+
+/* ── CURRENTLY — key / value pairs ── */
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 1.5rem;
+  align-items: baseline;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1rem;
+}
+
+.factKey {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.factValue {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(0.88rem, 1.1vw, 1rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── SKILLS — two-column tag list ── */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.35rem 0.8rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.skill:hover {
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ── END MARK ── */
+.end {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 6rem;
+}
+
+.endLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.endLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}
