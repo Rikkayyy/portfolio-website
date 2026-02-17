@@ -18,6 +18,7 @@ export interface Database {
           year: string             // '2024'
           essay: string | null     // prose for the series
           display_order: number
+          visible: boolean
           created_at: string
         }
         Insert: {
@@ -27,6 +28,7 @@ export interface Database {
           year: string
           essay?: string | null
           display_order?: number
+          visible?: boolean
           created_at?: string
         }
         Update: {
@@ -36,6 +38,7 @@ export interface Database {
           year?: string
           essay?: string | null
           display_order?: number
+          visible?: boolean
           created_at?: string
         }
       }
@@ -79,6 +82,7 @@ export interface Database {
           github_url: string | null
           live_url: string | null
           display_order: number
+          visible: boolean
           created_at: string
         }
         Insert: {
@@ -90,6 +94,7 @@ export interface Database {
           github_url?: string | null
           live_url?: string | null
           display_order?: number
+          visible?: boolean
           created_at?: string
         }
         Update: {
@@ -101,6 +106,7 @@ export interface Database {
           github_url?: string | null
           live_url?: string | null
           display_order?: number
+          visible?: boolean
           created_at?: string
         }
       }

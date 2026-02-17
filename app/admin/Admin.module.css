@@ -78,6 +78,16 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #0a0a0a;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  margin-bottom: 0.5rem;
+}
+
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -195,6 +205,26 @@
 .btnDanger:hover {
   background: rgba(255, 53, 0, 0.08);
   color: #ff3500;
+}
+
+.btnSecondary {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* ── ITEMS LIST ── */

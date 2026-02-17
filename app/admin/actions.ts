@@ -46,6 +46,48 @@ export async function deleteProject(id: string) {
   return { success: true };
 }
 
+export async function toggleProjectVisibility(id: string, visible: boolean) {
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase
+    .from('projects')
+    .update({ visible: !visible } as any)
+    .eq('id' as any, id as any);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin');
+  revalidatePath('/projects');
+  return { success: true };
+}
+
+export async function updateProject(id: string, formData: FormData) {
+  const supabase = getSupabaseAdmin();
+
+  const projectData: Partial<ProjectInsert> = {
+    title: formData.get('title') as string,
+    year: formData.get('year') as string,
+    description: formData.get('description') as string,
+    technologies: (formData.get('technologies') as string)
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean),
+    github_url: (formData.get('github_url') as string) || null,
+    live_url: (formData.get('live_url') as string) || null,
+    display_order: Number(formData.get('display_order') ?? 0),
+  };
+
+  const { error } = await supabase
+    .from('projects')
+    .update(projectData as any)
+    .eq('id' as any, id as any);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin');
+  revalidatePath('/projects');
+  return { success: true };
+}
+
 // ── Publications (gallery series) ─────────────────────────────────────────────
 
 export async function addPublication(formData: FormData) {
@@ -72,6 +114,43 @@ export async function deletePublication(id: string) {
   const supabase = getSupabaseAdmin();
   // Photos cascade-delete via foreign key
   const { error } = await supabase.from('publications').delete().eq('id' as any, id as any);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin');
+  revalidatePath('/gallery');
+  return { success: true };
+}
+
+export async function togglePublicationVisibility(id: string, visible: boolean) {
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase
+    .from('publications')
+    .update({ visible: !visible } as any)
+    .eq('id' as any, id as any);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/admin');
+  revalidatePath('/gallery');
+  return { success: true };
+}
+
+export async function updatePublication(id: string, formData: FormData) {
+  const supabase = getSupabaseAdmin();
+
+  const publicationData: Partial<PublicationInsert> = {
+    num: formData.get('num') as string,
+    title: formData.get('title') as string,
+    year: formData.get('year') as string,
+    essay: (formData.get('essay') as string) || null,
+    display_order: Number(formData.get('display_order') ?? 0),
+  };
+
+  const { error } = await supabase
+    .from('publications')
+    .update(publicationData as any)
+    .eq('id' as any, id as any);
 
   if (error) return { error: error.message };
 

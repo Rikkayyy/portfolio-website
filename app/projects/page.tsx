@@ -6,6 +6,7 @@ async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
+    .eq('visible', true)
     .order('display_order');
 
   if (error) {

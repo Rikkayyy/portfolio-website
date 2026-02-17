@@ -6,8 +6,12 @@ import styles from './Admin.module.css';
 import {
   addProject,
   deleteProject,
+  toggleProjectVisibility,
+  updateProject,
   addPublication,
   deletePublication,
+  togglePublicationVisibility,
+  updatePublication,
   uploadPhoto,
   deletePhoto,
 } from './actions';
@@ -69,7 +73,9 @@ export default function AdminPanel({ projects, publications, userEmail }: Props)
 function ProjectsTab({ projects }: { projects: Project[] }) {
   const [pending, setPending] = useState(false);
   const [msg, setMsg] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const editFormRef = useRef<HTMLFormElement>(null);
 
   async function handleAdd(formData: FormData) {
     setPending(true);
@@ -90,6 +96,24 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
     if (result.error) setMsg({ type: 'error', text: result.error });
   }
 
+  async function handleToggleVisibility(id: string, visible: boolean) {
+    const result = await toggleProjectVisibility(id, visible);
+    if (result.error) setMsg({ type: 'error', text: result.error });
+  }
+
+  async function handleEdit(id: string, formData: FormData) {
+    setPending(true);
+    setMsg(null);
+    const result = await updateProject(id, formData);
+    setPending(false);
+    if (result.error) {
+      setMsg({ type: 'error', text: result.error });
+    } else {
+      setMsg({ type: 'success', text: 'Project updated.' });
+      setEditingId(null);
+    }
+  }
+
   return (
     <>
       {/* Existing projects */}
@@ -98,17 +122,86 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
         {projects.length === 0 && <p className={styles.empty}>No projects yet.</p>}
         <div className={styles.items}>
           {projects.map((p, i) => (
-            <div key={p.id} className={styles.item}>
-              <span className={styles.itemNum}>{String(i + 1).padStart(2, '0')}</span>
-              <div className={styles.itemInfo}>
-                <div className={styles.itemTitle}>{p.title}</div>
-                <div className={styles.itemMeta}>
-                  {p.year} &middot; {p.technologies.join(', ')}
+            <div key={p.id}>
+              {editingId === p.id ? (
+                <form ref={editFormRef} className={styles.editForm} action={(formData) => handleEdit(p.id, formData)}>
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Title</label>
+                      <input name="title" className={styles.input} defaultValue={p.title} required />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Year</label>
+                      <input name="year" className={styles.input} defaultValue={p.year} required />
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label}>Description</label>
+                    <textarea name="description" className={styles.textarea} defaultValue={p.description} required />
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label}>Technologies (comma-separated)</label>
+                    <input name="technologies" className={styles.input} defaultValue={p.technologies.join(', ')} required />
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>GitHub URL (optional)</label>
+                      <input name="github_url" className={styles.input} defaultValue={p.github_url || ''} />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Live URL (optional)</label>
+                      <input name="live_url" className={styles.input} defaultValue={p.live_url || ''} />
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label}>Display Order</label>
+                    <input name="display_order" type="number" className={styles.input} defaultValue={p.display_order} />
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                    <button type="submit" className={styles.btn} disabled={pending}>
+                      {pending ? 'Saving…' : 'Save'}
+                    </button>
+                    <button type="button" className={styles.btnSecondary} onClick={() => setEditingId(null)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className={styles.item}>
+                  <span className={styles.itemNum}>{String(i + 1).padStart(2, '0')}</span>
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemTitle}>
+                      {p.title}
+                      {(p as any).visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
+                    </div>
+                    <div className={styles.itemMeta}>
+                      {p.year} &middot; {p.technologies.join(', ')}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button 
+                      className={styles.btnSecondary} 
+                      onClick={() => setEditingId(p.id)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className={styles.btnSecondary} 
+                      onClick={() => handleToggleVisibility(p.id, (p as any).visible ?? true)}
+                    >
+                      {(p as any).visible === false ? 'Show' : 'Hide'}
+                    </button>
+                    <button className={styles.btnDanger} onClick={() => handleDelete(p.id)}>
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <button className={styles.btnDanger} onClick={() => handleDelete(p.id)}>
-                Delete
-              </button>
+              )}
             </div>
           ))}
         </div>
@@ -172,8 +265,10 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
   const [pendingPub, setPendingPub] = useState(false);
   const [pendingPhoto, setPendingPhoto] = useState(false);
   const [msg, setMsg] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const pubFormRef = useRef<HTMLFormElement>(null);
   const photoFormRef = useRef<HTMLFormElement>(null);
+  const editFormRef = useRef<HTMLFormElement>(null);
 
   async function handleAddPub(formData: FormData) {
     setPendingPub(true);
@@ -192,6 +287,24 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
     if (!confirm('Delete this series and all its photos?')) return;
     const result = await deletePublication(id);
     if (result.error) setMsg({ type: 'error', text: result.error });
+  }
+
+  async function handleTogglePubVisibility(id: string, visible: boolean) {
+    const result = await togglePublicationVisibility(id, visible);
+    if (result.error) setMsg({ type: 'error', text: result.error });
+  }
+
+  async function handleEditPub(id: string, formData: FormData) {
+    setPendingPub(true);
+    setMsg(null);
+    const result = await updatePublication(id, formData);
+    setPendingPub(false);
+    if (result.error) {
+      setMsg({ type: 'error', text: result.error });
+    } else {
+      setMsg({ type: 'success', text: 'Series updated.' });
+      setEditingId(null);
+    }
   }
 
   async function handleUploadPhoto(formData: FormData) {
@@ -222,35 +335,94 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
         <div className={styles.items}>
           {publications.map((pub) => (
             <div key={pub.id}>
-              <div className={styles.item}>
-                <span className={styles.itemNum}>{pub.num}</span>
-                <div className={styles.itemInfo}>
-                  <div className={styles.itemTitle}>{pub.title}</div>
-                  <div className={styles.itemMeta}>
-                    {pub.year} &middot; {pub.photos.length} photo{pub.photos.length !== 1 ? 's' : ''}
+              {editingId === pub.id ? (
+                <form ref={editFormRef} className={styles.editForm} action={(formData) => handleEditPub(pub.id, formData)}>
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Number</label>
+                      <input name="num" className={styles.input} defaultValue={pub.num} required />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Title</label>
+                      <input name="title" className={styles.input} defaultValue={pub.title} required />
+                    </div>
                   </div>
-                </div>
-                <button className={styles.btnDanger} onClick={() => handleDeletePub(pub.id)}>
-                  Delete
-                </button>
-              </div>
 
-              {/* Photo thumbnails */}
-              {pub.photos.length > 0 && (
-                <div className={styles.photoGrid}>
-                  {pub.photos.map((photo) => (
-                    <div key={photo.id} className={styles.photoCard}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={photo.image_url} alt={photo.alt ?? ''} />
-                      <button
-                        className={styles.photoDelete}
-                        onClick={() => handleDeletePhoto(photo.id, photo.image_url)}
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Year</label>
+                      <input name="year" className={styles.input} defaultValue={pub.year} required />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Display Order</label>
+                      <input name="display_order" type="number" className={styles.input} defaultValue={pub.display_order} />
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label className={styles.label}>Essay (optional)</label>
+                    <textarea name="essay" className={styles.textarea} defaultValue={pub.essay || ''} placeholder="A short description or essay for this series…" />
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                    <button type="submit" className={styles.btn} disabled={pendingPub}>
+                      {pendingPub ? 'Saving…' : 'Save'}
+                    </button>
+                    <button type="button" className={styles.btnSecondary} onClick={() => setEditingId(null)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <>
+                  <div className={styles.item}>
+                    <span className={styles.itemNum}>{pub.num}</span>
+                    <div className={styles.itemInfo}>
+                      <div className={styles.itemTitle}>
+                        {pub.title}
+                        {(pub as any).visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
+                      </div>
+                      <div className={styles.itemMeta}>
+                        {pub.year} &middot; {pub.photos.length} photo{pub.photos.length !== 1 ? 's' : ''}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button 
+                        className={styles.btnSecondary} 
+                        onClick={() => setEditingId(pub.id)}
                       >
-                        ×
+                        Edit
+                      </button>
+                      <button 
+                        className={styles.btnSecondary} 
+                        onClick={() => handleTogglePubVisibility(pub.id, (pub as any).visible ?? true)}
+                      >
+                        {(pub as any).visible === false ? 'Show' : 'Hide'}
+                      </button>
+                      <button className={styles.btnDanger} onClick={() => handleDeletePub(pub.id)}>
+                        Delete
                       </button>
                     </div>
-                  ))}
-                </div>
+                  </div>
+
+                  {/* Photo thumbnails */}
+                  {pub.photos.length > 0 && (
+                    <div className={styles.photoGrid}>
+                      {pub.photos.map((photo) => (
+                        <div key={photo.id} className={styles.photoCard}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={photo.image_url} alt={photo.alt ?? ''} />
+                          <button
+                            className={styles.photoDelete}
+                            onClick={() => handleDeletePhoto(photo.id, photo.image_url)}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}
