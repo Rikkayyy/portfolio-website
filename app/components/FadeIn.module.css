@@ -1,0 +1,19 @@
+.wrap {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.wrap[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .wrap {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

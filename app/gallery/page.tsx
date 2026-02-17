@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styles from './Gallery.module.css';
+import { FadeIn } from '../components/FadeIn';
 
 // ── Add publications here ──────────────────────────────────────────────────
 // Each publication is a named series with its own section on the page.
@@ -46,67 +47,75 @@ export default function GalleryPage() {
         </header>
 
         {/* Table of contents */}
-        <section className={styles.toc}>
-          <p className={styles.tocLabel}>Contents</p>
-          {publications.map((pub) => (
-            <a key={pub.id} href={`#${pub.id}`} className={styles.tocRow}>
-              <span className={styles.tocNum}>{pub.num}</span>
-              <span className={styles.tocDash}>—</span>
-              <span className={styles.tocTitle}>{pub.title}</span>
-              <span className={styles.tocRule} />
-              <span className={styles.tocYear}>{pub.year}</span>
-              <span className={styles.tocArrow}>→</span>
-            </a>
-          ))}
-        </section>
+        <FadeIn delay={200}>
+          <section className={styles.toc}>
+            <p className={styles.tocLabel}>Contents</p>
+            {publications.map((pub) => (
+              <a key={pub.id} href={`#${pub.id}`} className={styles.tocRow}>
+                <span className={styles.tocNum}>{pub.num}</span>
+                <span className={styles.tocDash}>—</span>
+                <span className={styles.tocTitle}>{pub.title}</span>
+                <span className={styles.tocRule} />
+                <span className={styles.tocYear}>{pub.year}</span>
+                <span className={styles.tocArrow}>→</span>
+              </a>
+            ))}
+          </section>
+        </FadeIn>
 
         {/* Artist statement */}
-        <section className={styles.statement}>
-          <p className={styles.statementLabel}>Statement</p>
-          <p className={styles.statementText}>
-            {/* Replace this with your own words */}
-            A visual journal exploring light, space, and the human form.
-            Each series is a meditation on a singular subject — an attempt
-            to distill the complexity of a moment into something essential
-            and still.
-          </p>
-        </section>
+        <FadeIn delay={350}>
+          <section className={styles.statement}>
+            <p className={styles.statementLabel}>Statement</p>
+            <p className={styles.statementText}>
+              {/* Replace this with your own words */}
+              A visual journal exploring light, space, and the human form.
+              Each series is a meditation on a singular subject — an attempt
+              to distill the complexity of a moment into something essential
+              and still.
+            </p>
+          </section>
+        </FadeIn>
 
         {/* Red accent divider */}
-        <div className={styles.divider} />
+        <FadeIn delay={450}>
+          <div className={styles.divider} />
+        </FadeIn>
 
         {/* Publication sections */}
         {publications.map((pub) => (
-          <section key={pub.id} id={pub.id} className={styles.section}>
-            <div className={styles.pubLayout}>
+          <FadeIn key={pub.id}>
+            <section id={pub.id} className={styles.section}>
+              <div className={styles.pubLayout}>
 
-              {/* Essay / caption column */}
-              <div className={styles.textCol}>
-                <span className={styles.textGhost} aria-hidden="true">{pub.num}</span>
-                <span className={styles.textNum}>{pub.num}</span>
-                <h2 className={styles.textTitle}>{pub.title}</h2>
-                <p className={styles.textEssay}>{pub.essay}</p>
-                <span className={styles.textYear}>{pub.year}</span>
+                {/* Essay / caption column */}
+                <div className={styles.textCol}>
+                  <span className={styles.textGhost} aria-hidden="true">{pub.num}</span>
+                  <span className={styles.textNum}>{pub.num}</span>
+                  <h2 className={styles.textTitle}>{pub.title}</h2>
+                  <p className={styles.textEssay}>{pub.essay}</p>
+                  <span className={styles.textYear}>{pub.year}</span>
+                </div>
+
+                {/* Photos column */}
+                <div className={styles.photosCol}>
+                  {pub.photos.map((photo, i) => (
+                    <div key={i} className={styles.cell}>
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        quality={100}
+                        style={{ objectFit: 'cover' }}
+                        sizes="50vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+
               </div>
-
-              {/* Photos column */}
-              <div className={styles.photosCol}>
-                {pub.photos.map((photo, i) => (
-                  <div key={i} className={styles.cell}>
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      fill
-                      quality={100}
-                      style={{ objectFit: 'cover' }}
-                      sizes="50vw"
-                    />
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </section>
+            </section>
+          </FadeIn>
         ))}
 
         {/* End mark */}

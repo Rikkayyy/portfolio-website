@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './Contact.module.css';
+import { FadeIn } from '../components/FadeIn';
 
 // ── Add your social links here ────────────────────────────────────────────────
 const socials = [
@@ -53,83 +54,89 @@ export default function ContactPage() {
         </p>
 
         {/* Form */}
-        {status === 'sent' ? (
-          <p className={styles.success}>
-            Thanks for reaching out — I&apos;ll get back to you soon.
-          </p>
-        ) : (
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="name">Name</label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                className={styles.input}
-                placeholder="Your name"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        <FadeIn delay={300}>
+          {status === 'sent' ? (
+            <p className={styles.success}>
+              Thanks for reaching out — I&apos;ll get back to you soon.
+            </p>
+          ) : (
+            <form className={styles.form} onSubmit={handleSubmit}>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  className={styles.input}
+                  placeholder="Your name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                className={styles.input}
-                placeholder="your@email.com"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  className={styles.input}
+                  placeholder="your@email.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                className={styles.textarea}
-                placeholder="What's on your mind?"
-                value={form.message}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  className={styles.textarea}
+                  placeholder="What's on your mind?"
+                  value={form.message}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <button
-              type="submit"
-              className={styles.submit}
-              disabled={status === 'sending'}
-            >
-              {status === 'sending' ? 'Sending…' : 'Send Message →'}
-            </button>
-          </form>
-        )}
+              <button
+                type="submit"
+                className={styles.submit}
+                disabled={status === 'sending'}
+              >
+                {status === 'sending' ? 'Sending…' : 'Send Message →'}
+              </button>
+            </form>
+          )}
+        </FadeIn>
 
         {/* Divider */}
-        <div className={styles.divider} />
+        <FadeIn delay={100}>
+          <div className={styles.divider} />
+        </FadeIn>
 
         {/* Social links */}
-        <p className={styles.socialsLabel}>Find me at</p>
-        <div className={styles.socials}>
-          {socials.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              className={styles.socialLink}
-              target={s.href.startsWith('mailto') ? undefined : '_blank'}
-              rel={s.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-            >
-              <span className={styles.socialName}>{s.name}</span>
-              <span className={styles.socialHandle}>{s.handle}</span>
-              <span className={styles.socialArrow}>→</span>
-            </a>
-          ))}
-        </div>
+        <FadeIn delay={150}>
+          <p className={styles.socialsLabel}>Find me at</p>
+          <div className={styles.socials}>
+            {socials.map((s) => (
+              <a
+                key={s.name}
+                href={s.href}
+                className={styles.socialLink}
+                target={s.href.startsWith('mailto') ? undefined : '_blank'}
+                rel={s.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+              >
+                <span className={styles.socialName}>{s.name}</span>
+                <span className={styles.socialHandle}>{s.handle}</span>
+                <span className={styles.socialArrow}>→</span>
+              </a>
+            ))}
+          </div>
+        </FadeIn>
 
         {/* End mark */}
         <div className={styles.end}>

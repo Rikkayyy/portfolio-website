@@ -74,8 +74,12 @@ export default function ProjectsPage() {
 
         {/* Card grid */}
         <div className={styles.grid}>
-          {projects.map((proj) => (
-            <article key={proj.num} className={styles.card}>
+          {projects.map((proj, i) => (
+            <article
+              key={proj.num}
+              className={styles.card}
+              style={{ '--card-delay': `${i * 80}ms` } as React.CSSProperties}
+            >
 
               {/* Glow overlay */}
               <div className={styles.cardGlow} aria-hidden="true" />
