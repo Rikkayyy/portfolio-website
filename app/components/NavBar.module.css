@@ -90,7 +90,7 @@
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #ff3500;
+  background: var(--dot-color, #ff3500);
 }
 
 /* ── MOBILE TOGGLE ── */

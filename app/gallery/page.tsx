@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './Gallery.module.css';
 
 // ── Add publications here ──────────────────────────────────────────────────
@@ -37,13 +36,6 @@ export default function GalleryPage() {
   return (
     <div className={styles.page}>
       <div className={styles.noise} />
-
-      {/* Fixed nav */}
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.backBtn}>← Back</Link>
-        <span className={styles.navName}>Rikki</span>
-        <span className={styles.navLabel}>Gallery</span>
-      </nav>
 
       <main className={styles.main}>
 

@@ -30,7 +30,7 @@
   font-weight: 700;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: #ff3500;
+  color: #00e5ff;
   margin: 0 0 1.2rem;
 }
 
@@ -148,8 +148,8 @@
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 53, 0, 0.4) 30%,
-    rgba(255, 53, 0, 0.4) 70%,
+    rgba(0, 229, 255, 0.25) 30%,
+    rgba(0, 229, 255, 0.25) 70%,
     transparent 100%
   );
   margin: 0 0 4rem;
@@ -220,7 +220,7 @@
 
 .socialLink:hover .socialArrow {
   transform: translateX(5px);
-  color: #ff3500;
+  color: #00e5ff;
 }
 
 /* ── END MARK ── */

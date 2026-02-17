@@ -6,14 +6,14 @@ import { usePathname } from 'next/navigation';
 import styles from './NavBar.module.css';
 
 const navLinks = [
-  { name: 'Gallery', href: '/gallery' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Gallery', href: '/gallery', dot: '#ff3500' },
+  { name: 'Projects', href: '/projects', dot: '#00e5ff' },
+  { name: 'About', href: '/about', dot: '#ff3500' },
+  { name: 'Contact', href: '/contact', dot: '#00e5ff' },
 ];
 
 // Pages that manage their own nav
-const EXCLUDED = ['/', '/gallery', '/projects'];
+const EXCLUDED = ['/'];
 
 export const NavBar: React.FC = () => {
   const pathname = usePathname();
@@ -46,6 +46,7 @@ export const NavBar: React.FC = () => {
               key={link.href}
               href={link.href}
               className={`${styles.link} ${pathname === link.href ? styles.linkActive : ''}`}
+              style={{ '--dot-color': link.dot } as React.CSSProperties}
             >
               {link.name}
             </Link>

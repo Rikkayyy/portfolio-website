@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styles from './Projects.module.css';
 
 // ── Add projects here ────────────────────────────────────────────────────────
@@ -61,13 +60,6 @@ export default function ProjectsPage() {
   return (
     <div className={styles.page}>
       <div className={styles.noise} />
-
-      {/* Fixed nav */}
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.backBtn}>← Back</Link>
-        <span className={styles.navName}>Rikki</span>
-        <span className={styles.navLabel}>Projects</span>
-      </nav>
 
       <main className={styles.main}>
 
