@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './Admin.module.css';
 import {
   addProject,
@@ -10,20 +11,37 @@ import {
   uploadPhoto,
   deletePhoto,
 } from './actions';
+import { supabase } from '@/lib/supabase';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
 
 interface Props {
   projects: Project[];
   publications: PublicationWithPhotos[];
+  userEmail: string;
 }
 
-export default function AdminPanel({ projects, publications }: Props) {
+export default function AdminPanel({ projects, publications, userEmail }: Props) {
   const [tab, setTab] = useState<'projects' | 'gallery'>('projects');
+  const router = useRouter();
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    router.push('/admin/login');
+    router.refresh();
+  }
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.heading}>Admin</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <h1 className={styles.heading} style={{ margin: 0 }}>Admin</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ fontSize: '0.875rem', color: '#666' }}>{userEmail}</span>
+            <button onClick={handleSignOut} className={styles.btnDanger}>
+              Sign Out
+            </button>
+          </div>
+        </div>
 
         {/* Tabs */}
         <div className={styles.tabs}>

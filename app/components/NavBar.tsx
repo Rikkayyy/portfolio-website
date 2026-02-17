@@ -37,7 +37,7 @@ export const NavBar: React.FC = () => {
     <>
       <nav className={`${styles.nav} ${isScrolled ? styles.navScrolled : ''}`}>
         {/* Brand */}
-        <Link href="/" className={styles.brand}>Rikki</Link>
+        <Link href="/" className={styles.brand}>Home</Link>
 
         {/* Desktop links */}
         <div className={styles.links}>

@@ -1,11 +1,21 @@
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { createSupabaseServerClient } from '@/lib/supabase';
+import { redirect } from 'next/navigation';
 import AdminPanel from './AdminPanel';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
-  const supabase = getSupabaseAdmin();
+  const supabase = await createSupabaseServerClient();
+
+  // Check authentication
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/admin/login');
+  }
 
   // Fetch projects
   const { data: projects } = await supabase
@@ -23,15 +33,16 @@ export default async function AdminPage() {
     .order('display_order', { ascending: true });
 
   // Sort photos within each publication
-  const publicationsWithSortedPhotos = (publications ?? []).map((pub) => ({
+  const publicationsWithSortedPhotos = (publications ?? []).map((pub: any) => ({
     ...pub,
-    photos: (pub.photos ?? []).sort((a, b) => a.display_order - b.display_order),
+    photos: (pub.photos ?? []).sort((a: any, b: any) => a.display_order - b.display_order),
   })) as PublicationWithPhotos[];
 
   return (
     <AdminPanel
-      projects={(projects ?? []) as Project[]}
+      projects={(projects ?? []) as any}
       publications={publicationsWithSortedPhotos}
+      userEmail={user.email ?? ''}
     />
   );
 }
