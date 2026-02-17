@@ -255,34 +255,65 @@
   padding: 6rem 0 0;
 }
 
-/* Section header row */
-.sectionHeader {
-  position: relative;
-  padding: 0 2.5rem 3rem;
+/* Two-column: photos | essay */
+.pubLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Photos column — stacked vertically */
+.photosCol {
   display: flex;
-  align-items: baseline;
-  gap: 1.4rem;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cell {
+  position: relative;
+  flex: 1;
+  min-height: 50vh;
+  background: #0f0f0f;
   overflow: hidden;
 }
 
-.sectionNum {
-  font-family: var(--font-syne), sans-serif;
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: #ff3500;
-  flex-shrink: 0;
-}
-
-.sectionMeta {
+/* Text / essay column */
+.textCol {
+  position: relative;
+  padding: 5rem 4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  justify-content: center;
+  gap: 2rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
 }
 
-.sectionTitle {
+/* Ghost number behind essay */
+.textGhost {
+  position: absolute;
+  bottom: -1.5rem;
+  right: -1rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.025);
+  pointer-events: none;
+  user-select: none;
+}
+
+.textNum {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #ff3500;
+}
+
+.textTitle {
   font-family: var(--font-playfair), serif;
-  font-size: clamp(2rem, 5vw, 5rem);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 0.92;
@@ -290,40 +321,22 @@
   margin: 0;
 }
 
-.sectionYear {
+.textEssay {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.38);
+  margin: 0;
+}
+
+.textYear {
   font-family: var(--font-syne), sans-serif;
   font-size: 0.44rem;
-  letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.16);
-}
-
-/* Ghost number behind header */
-.sectionGhost {
-  position: absolute;
-  right: 2.5rem;
-  bottom: -0.8rem;
-  font-family: var(--font-syne), sans-serif;
-  font-size: clamp(5rem, 16vw, 15rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.06em;
-  color: rgba(255, 255, 255, 0.028);
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ── TWO-COLUMN PHOTO GRID ── */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3px;
-}
-
-.cell {
-  position: relative;
-  height: 72vh;
-  background: #0f0f0f;
-  overflow: hidden;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.14);
 }
 
 /* ── END MARK ── */

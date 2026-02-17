@@ -11,20 +11,26 @@ const publications = [
     num: '01',
     title: 'Series I',
     year: '2024',
+    // Replace with your own essay or caption for this series
+    essay: `A visual journal exploring light, space, and the human form.
+Each series is a meditation on a singular subject — an attempt
+to distill the complexity of a moment into something essential
+and still.`,
     photos: [
       { src: '/portrait-photo.jpg', alt: 'Portrait' },
       { src: '/portrait-photo-two.jpg', alt: 'Portrait' },
     ],
   },
-  {
-    id: 'series-ii',
-    num: '02',
-    title: 'Series II',
-    year: '2025',
-    photos: [
-      { src: '/your-photo.jpg', alt: '...' },
-    ],
-  },
+  // {
+  //   id: 'series-ii',
+  //   num: '02',
+  //   title: 'Series II',
+  //   year: '2025',
+  //   essay: `Your essay here.`,
+  //   photos: [
+  //     { src: '/your-photo.jpg', alt: '...' },
+  //   ],
+  // },
 ];
 
 export default function GalleryPage() {
@@ -80,35 +86,34 @@ export default function GalleryPage() {
         {/* Publication sections */}
         {publications.map((pub) => (
           <section key={pub.id} id={pub.id} className={styles.section}>
+            <div className={styles.pubLayout}>
 
-            {/* Section header */}
-            <div className={styles.sectionHeader}>
-              <span className={styles.sectionNum}>{pub.num}</span>
-              <div className={styles.sectionMeta}>
-                <h2 className={styles.sectionTitle}>{pub.title}</h2>
-                <span className={styles.sectionYear}>{pub.year}</span>
+              {/* Essay / caption column */}
+              <div className={styles.textCol}>
+                <span className={styles.textGhost} aria-hidden="true">{pub.num}</span>
+                <span className={styles.textNum}>{pub.num}</span>
+                <h2 className={styles.textTitle}>{pub.title}</h2>
+                <p className={styles.textEssay}>{pub.essay}</p>
+                <span className={styles.textYear}>{pub.year}</span>
               </div>
-              <span className={styles.sectionGhost} aria-hidden="true">
-                {pub.num}
-              </span>
-            </div>
 
-            {/* Two-column photo grid */}
-            <div className={styles.grid}>
-              {pub.photos.map((photo, i) => (
-                <div key={i} className={styles.cell}>
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    quality={100}
-                    style={{ objectFit: 'cover' }}
-                    sizes="50vw"
-                  />
-                </div>
-              ))}
-            </div>
+              {/* Photos column */}
+              <div className={styles.photosCol}>
+                {pub.photos.map((photo, i) => (
+                  <div key={i} className={styles.cell}>
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      quality={100}
+                      style={{ objectFit: 'cover' }}
+                      sizes="50vw"
+                    />
+                  </div>
+                ))}
+              </div>
 
+            </div>
           </section>
         ))}
 
