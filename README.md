@@ -1,112 +1,114 @@
 # Portfolio Website
 
-A modern portfolio website built with Next.js, TypeScript, Tailwind CSS, and Supabase.
+A modern, full-stack portfolio website featuring dynamic content management, photography gallery, and an admin dashboard. Built with Next.js 15, TypeScript, Tailwind CSS, and Supabase.
 
-## Setup Instructions
+🔗 **[Live Demo](#)** <!-- Add your Vercel URL here -->
 
-### 1. Install Dependencies
-```bash
-npm install
-```
+## ✨ Features
 
-### 2. Configure Supabase
+### Frontend
+- **Dynamic Project Showcase** - Display portfolio projects with detailed descriptions and images
+- **Photography Gallery** - Curated photo collection with responsive grid layout
+- **About Page** - Personal introduction and background
+- **Contact Section** - Easy way for visitors to get in touch
+- **Smooth Animations** - Fade-in effects and polished transitions
+- **Fully Responsive** - Optimized for all device sizes
 
-Your Supabase configuration is already set up in `.env.local`. The database schema and seed data are in the `database/` folder.
+### Backend & Admin
+- **Secure Authentication** - Protected admin routes with Supabase Auth
+- **Content Management System** - Add, edit, and delete projects and photos without touching code
+- **Admin Dashboard** - Intuitive interface for managing all content
+- **Database Integration** - PostgreSQL database via Supabase
+- **Type-Safe API** - Server actions with full TypeScript support
 
-#### Set up your database:
+## 🛠 Tech Stack
 
-1. Go to your [Supabase Dashboard](https://app.supabase.com/project/qjwhnslncsbqqxkwjrqk)
-2. Navigate to the SQL Editor
-3. Run the schema: Copy and paste the contents of `database/schema.sql` and execute
-4. Run the seed data (optional): Copy and paste the contents of `database/seed.sql` and execute
+**Frontend:** Next.js 15 (App Router) • React • TypeScript • Tailwind CSS
 
-### 3. Run the Development Server
+**Backend:** Supabase (PostgreSQL + Auth) • Server Actions
 
-```bash
-npm run dev
-```
+**Deployment:** Vercel
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Dev Tools:** ESLint • PostCSS
 
-## Project Structure
+## 🏗 Architecture Highlights
+
+- **App Router** - Leveraging Next.js 15's latest routing system with server components
+- **Server-Side Rendering** - Dynamic content with optimal performance
+- **Type Safety** - Full TypeScript implementation with Supabase type generation
+- **Middleware Authentication** - Protected admin routes at the edge
+- **Modular Components** - Reusable UI components with CSS modules
+
+## 📁 Project Structure
 
 ```
 portfolio-website/
-├── app/                  # Next.js app directory
-├── lib/                  # Utility libraries (Supabase client)
-├── types/                # TypeScript type definitions
-├── database/             # Database schema and seed files
-├── public/               # Static assets
-└── .env.local           # Environment variables (Supabase keys)
+├── app/                  # Next.js app directory (routes & pages)
+│   ├── about/           # About page
+│   ├── admin/           # Admin dashboard & authentication
+│   ├── components/      # Reusable UI components
+│   ├── contact/         # Contact page
+│   ├── gallery/         # Photography gallery
+│   └── projects/        # Projects showcase
+├── lib/                 # Supabase client utilities
+├── types/               # TypeScript type definitions
+├── database/            # Database schema and migrations
+└── middleware.ts        # Auth middleware for protected routes
 ```
 
-## Database Tables
+## 🚀 Local Development
 
-- **projects**: Store your portfolio projects
-- **photography**: Store your photography portfolio
+### Prerequisites
+- Node.js 18+ and npm
+- Supabase account ([sign up free](https://supabase.com))
 
-## Tech Stack
+### Setup
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: Supabase (PostgreSQL)
-- **Deployment**: Vercel
-
-## Deployment to Vercel
-
-This project is optimized for deployment on Vercel (made by the creators of Next.js).
-
-### Quick Deploy
-
-1. **Push to Git** (GitHub, GitLab, or Bitbucket):
+1. **Install dependencies:**
    ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push
+   npm install
    ```
 
-2. **Import to Vercel**:
-   - Go to [vercel.com](https://vercel.com) and sign up/login
-   - Click "Add New..." → "Project"
-   - Import your repository
-   - Vercel auto-detects Next.js - no configuration needed!
+2. **Configure environment variables:**
+   
+   Create a `.env.local` file with your Supabase credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
 
-3. **Add Environment Variables**:
-   - During import, add these variables (or add later in Project Settings → Environment Variables):
-     - `NEXT_PUBLIC_SUPABASE_URL` → Your Supabase project URL
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Your Supabase anon key
-   - Get these from your [Supabase Dashboard](https://app.supabase.com/project/qjwhnslncsbqqxkwjrqk/settings/api)
+3. **Set up database:**
+   - Go to your [Supabase Dashboard](https://app.supabase.com)
+   - Navigate to SQL Editor
+   - Run `database/schema.sql` to create tables
 
-4. **Deploy**:
-   - Click "Deploy"
-   - Your site will be live at `https://your-project.vercel.app`
+4. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+   
+   Visit [http://localhost:3000](http://localhost:3000)
 
-### Features You Get
+## 📦 Database Schema
 
-- ✅ Automatic deployments on every git push
-- ✅ Preview deployments for every branch/PR
-- ✅ Global CDN for fast loading worldwide
-- ✅ Automatic HTTPS
-- ✅ Zero configuration needed
-- ✅ Analytics and Web Vitals monitoring
+- **projects** - Portfolio projects with title, description, images, and links
+- **photography** - Photo gallery items with images and metadata
 
-### Custom Domain (Optional)
+## 🌐 Deployment
 
-1. In Vercel dashboard, go to your project → Settings → Domains
-2. Add your custom domain and follow DNS configuration steps
+Optimized for one-click deployment on Vercel:
 
-## Next Steps
+1. Push to GitHub
+2. Import to [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy
 
-1. Run the database schema and seed files in your Supabase dashboard
-2. Start building your pages (about, projects, photography, contact)
-3. Add your own content and images
-4. Customize the design to match your style
-5. Deploy to Vercel following the steps above
+Vercel automatically detects Next.js configuration and provides:
+- Automatic HTTPS
+- Global CDN
+- Edge Functions
+- Preview deployments for PRs
 
-## Learn More
+---
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Vercel Documentation](https://vercel.com/docs)
+Built with Next.js 15 and modern web technologies.
