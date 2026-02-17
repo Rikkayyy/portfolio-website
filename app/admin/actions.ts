@@ -26,7 +26,8 @@ export async function addProject(formData: FormData) {
     display_order: Number(formData.get('display_order') ?? 0),
   };
 
-  const { error } = await supabase.from('projects').insert(projectData as any);
+  // @ts-expect-error - Supabase SDK type inference limitation
+  const { error } = await supabase.from('projects').insert(projectData);
 
   if (error) return { error: error.message };
 
@@ -37,7 +38,7 @@ export async function addProject(formData: FormData) {
 
 export async function deleteProject(id: string) {
   const supabase = getSupabaseAdmin();
-  const { error } = await supabase.from('projects').delete().eq('id' as any, id as any);
+  const { error } = await supabase.from('projects').delete().eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -50,8 +51,9 @@ export async function toggleProjectVisibility(id: string, visible: boolean) {
   const supabase = getSupabaseAdmin();
   const { error } = await supabase
     .from('projects')
-    .update({ visible: !visible } as any)
-    .eq('id' as any, id as any);
+    // @ts-expect-error - Supabase SDK type inference limitation
+    .update({ visible: !visible })
+    .eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -78,8 +80,9 @@ export async function updateProject(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('projects')
-    .update(projectData as any)
-    .eq('id' as any, id as any);
+    // @ts-expect-error - Supabase SDK type inference limitation
+    .update(projectData)
+    .eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -101,7 +104,8 @@ export async function addPublication(formData: FormData) {
     display_order: Number(formData.get('display_order') ?? 0),
   };
 
-  const { error } = await supabase.from('publications').insert(publicationData as any);
+  // @ts-expect-error - Supabase SDK type inference limitation
+  const { error } = await supabase.from('publications').insert(publicationData);
 
   if (error) return { error: error.message };
 
@@ -113,7 +117,7 @@ export async function addPublication(formData: FormData) {
 export async function deletePublication(id: string) {
   const supabase = getSupabaseAdmin();
   // Photos cascade-delete via foreign key
-  const { error } = await supabase.from('publications').delete().eq('id' as any, id as any);
+  const { error } = await supabase.from('publications').delete().eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -126,8 +130,9 @@ export async function togglePublicationVisibility(id: string, visible: boolean) 
   const supabase = getSupabaseAdmin();
   const { error } = await supabase
     .from('publications')
-    .update({ visible: !visible } as any)
-    .eq('id' as any, id as any);
+    // @ts-expect-error - Supabase SDK type inference limitation
+    .update({ visible: !visible })
+    .eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -149,8 +154,9 @@ export async function updatePublication(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('publications')
-    .update(publicationData as any)
-    .eq('id' as any, id as any);
+    // @ts-expect-error - Supabase SDK type inference limitation
+    .update(publicationData)
+    .eq('id', id);
 
   if (error) return { error: error.message };
 
@@ -191,7 +197,8 @@ export async function uploadPhoto(formData: FormData) {
     display_order: displayOrder,
   };
 
-  const { error: insertError } = await supabase.from('photos').insert(photoData as any);
+  // @ts-expect-error - Supabase SDK type inference limitation
+  const { error: insertError } = await supabase.from('photos').insert(photoData);
 
   if (insertError) return { error: insertError.message };
 
@@ -209,7 +216,7 @@ export async function deletePhoto(id: string, imageUrl: string) {
     await supabase.storage.from('gallery').remove([match[1]]);
   }
 
-  const { error } = await supabase.from('photos').delete().eq('id' as any, id as any);
+  const { error } = await supabase.from('photos').delete().eq('id', id);
 
   if (error) return { error: error.message };
 
