@@ -51,7 +51,50 @@ portfolio-website/
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Database**: Supabase (PostgreSQL)
-- **Deployment**: Vercel (recommended)
+- **Deployment**: Vercel
+
+## Deployment to Vercel
+
+This project is optimized for deployment on Vercel (made by the creators of Next.js).
+
+### Quick Deploy
+
+1. **Push to Git** (GitHub, GitLab, or Bitbucket):
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push
+   ```
+
+2. **Import to Vercel**:
+   - Go to [vercel.com](https://vercel.com) and sign up/login
+   - Click "Add New..." → "Project"
+   - Import your repository
+   - Vercel auto-detects Next.js - no configuration needed!
+
+3. **Add Environment Variables**:
+   - During import, add these variables (or add later in Project Settings → Environment Variables):
+     - `NEXT_PUBLIC_SUPABASE_URL` → Your Supabase project URL
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Your Supabase anon key
+   - Get these from your [Supabase Dashboard](https://app.supabase.com/project/qjwhnslncsbqqxkwjrqk/settings/api)
+
+4. **Deploy**:
+   - Click "Deploy"
+   - Your site will be live at `https://your-project.vercel.app`
+
+### Features You Get
+
+- ✅ Automatic deployments on every git push
+- ✅ Preview deployments for every branch/PR
+- ✅ Global CDN for fast loading worldwide
+- ✅ Automatic HTTPS
+- ✅ Zero configuration needed
+- ✅ Analytics and Web Vitals monitoring
+
+### Custom Domain (Optional)
+
+1. In Vercel dashboard, go to your project → Settings → Domains
+2. Add your custom domain and follow DNS configuration steps
 
 ## Next Steps
 
@@ -59,9 +102,11 @@ portfolio-website/
 2. Start building your pages (about, projects, photography, contact)
 3. Add your own content and images
 4. Customize the design to match your style
+5. Deploy to Vercel following the steps above
 
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Vercel Documentation](https://vercel.com/docs)
