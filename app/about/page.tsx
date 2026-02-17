@@ -4,10 +4,10 @@ import { FadeIn } from '../components/FadeIn';
 export default function AboutPage() {
   // ── Edit your facts here ──────────────────────────────────────────────────
   const facts = [
-    { key: 'Based in', value: 'Your City, Country' },
+    { key: 'Based in', value: 'Houston, Texas' },
     { key: 'Currently', value: 'Open to new opportunities' },
     { key: 'Background', value: 'Software development & photography' },
-    { key: 'Education', value: 'Your Degree — Your University' },
+    { key: 'Education', value: 'B.S. Computer Science — University of Houston' },
   ];
 
   // ── Edit your skills here ─────────────────────────────────────────────────
@@ -33,7 +33,7 @@ export default function AboutPage() {
         {/* Bio — replace with your own words */}
         <FadeIn delay={250}>
           <p className={styles.bio}>
-            I&apos;m a developer and photographer based somewhere interesting.
+            I&apos;m a developer and photographer based in Houston, Texas.
             I build things for the web and make photographs that try to
             say something — often about light, time, and the spaces people leave behind.
             Both practices share the same obsession: finding the right frame.

@@ -6,10 +6,10 @@ import { FadeIn } from '../components/FadeIn';
 
 // ── Add your social links here ────────────────────────────────────────────────
 const socials = [
-  { name: 'Email', handle: 'you@example.com', href: 'mailto:you@example.com' },
-  { name: 'GitHub', handle: '@yourusername', href: 'https://github.com/yourusername' },
-  { name: 'Instagram', handle: '@yourusername', href: 'https://instagram.com/yourusername' },
-  { name: 'LinkedIn', handle: 'Your Name', href: 'https://linkedin.com/in/yourusername' },
+  { name: 'Email', handle: 'rikkicasupanan.dev@gmail.com', href: 'mailto:rikkicasupanan.dev@gmail.com' },
+  { name: 'GitHub', handle: '@Rikkayyy', href: 'https://github.com/Rikkayyy' },
+  { name: 'Instagram', handle: '@rikki.casupanan', href: 'https://instagram.com/rikki.casupanan' },
+  { name: 'LinkedIn', handle: 'Rikki Casupanan', href: 'https://linkedin.com/in/rikkicasupanan' },
 ];
 
 export default function ContactPage() {
