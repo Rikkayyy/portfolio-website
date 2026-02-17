@@ -116,6 +116,55 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
 
   return (
     <>
+      {/* Add project form */}
+      <div className={styles.section}>
+        <p className={styles.sectionTitle}>Add Project</p>
+        <form ref={formRef} className={styles.form} action={handleAdd}>
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label className={styles.label}>Title</label>
+              <input name="title" className={styles.input} required />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Year</label>
+              <input name="year" className={styles.input} placeholder="2024" required />
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Description</label>
+            <textarea name="description" className={styles.textarea} required />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Technologies (comma-separated)</label>
+            <input name="technologies" className={styles.input} placeholder="Next.js, TypeScript, Supabase" required />
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label className={styles.label}>GitHub URL (optional)</label>
+              <input name="github_url" className={styles.input} />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Live URL (optional)</label>
+              <input name="live_url" className={styles.input} />
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Display Order</label>
+            <input name="display_order" type="number" className={styles.input} defaultValue={projects.length} />
+          </div>
+
+          {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
+
+          <button type="submit" className={styles.btn} disabled={pending}>
+            {pending ? 'Adding…' : 'Add Project'}
+          </button>
+        </form>
+      </div>
+
       {/* Existing projects */}
       <div className={styles.section}>
         <p className={styles.sectionTitle}>Existing Projects</p>
@@ -206,55 +255,6 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
           ))}
         </div>
       </div>
-
-      {/* Add project form */}
-      <div className={styles.section}>
-        <p className={styles.sectionTitle}>Add Project</p>
-        <form ref={formRef} className={styles.form} action={handleAdd}>
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label}>Title</label>
-              <input name="title" className={styles.input} required />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Year</label>
-              <input name="year" className={styles.input} placeholder="2024" required />
-            </div>
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>Description</label>
-            <textarea name="description" className={styles.textarea} required />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>Technologies (comma-separated)</label>
-            <input name="technologies" className={styles.input} placeholder="Next.js, TypeScript, Supabase" required />
-          </div>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label}>GitHub URL (optional)</label>
-              <input name="github_url" className={styles.input} />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Live URL (optional)</label>
-              <input name="live_url" className={styles.input} />
-            </div>
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>Display Order</label>
-            <input name="display_order" type="number" className={styles.input} defaultValue={projects.length} />
-          </div>
-
-          {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
-
-          <button type="submit" className={styles.btn} disabled={pending}>
-            {pending ? 'Adding…' : 'Add Project'}
-          </button>
-        </form>
-      </div>
     </>
   );
 }
@@ -328,6 +328,90 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
 
   return (
     <>
+      {/* Add series form */}
+      <div className={styles.section}>
+        <p className={styles.sectionTitle}>Add Series</p>
+        <form ref={pubFormRef} className={styles.form} action={handleAddPub}>
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label className={styles.label}>Number</label>
+              <input
+                name="num"
+                className={styles.input}
+                placeholder="01"
+                defaultValue={String(publications.length + 1).padStart(2, '0')}
+                required
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Title</label>
+              <input name="title" className={styles.input} placeholder="Series I" required />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label className={styles.label}>Year</label>
+              <input name="year" className={styles.input} placeholder="2024" required />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Display Order</label>
+              <input name="display_order" type="number" className={styles.input} defaultValue={publications.length} />
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Essay (optional)</label>
+            <textarea name="essay" className={styles.textarea} placeholder="A short description or essay for this series…" />
+          </div>
+
+          <button type="submit" className={styles.btn} disabled={pendingPub}>
+            {pendingPub ? 'Adding…' : 'Add Series'}
+          </button>
+        </form>
+      </div>
+
+      {/* Upload photo form */}
+      {publications.length > 0 && (
+        <div className={styles.section}>
+          <p className={styles.sectionTitle}>Upload Photo</p>
+          <form ref={photoFormRef} className={styles.form} action={handleUploadPhoto}>
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={styles.label}>Series</label>
+                <select name="publication_id" className={styles.select} required>
+                  {publications.map((pub) => (
+                    <option key={pub.id} value={pub.id}>
+                      {pub.num} — {pub.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label}>Display Order</label>
+                <input name="display_order" type="number" className={styles.input} defaultValue={0} />
+              </div>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Image</label>
+              <input name="file" type="file" accept="image/*" className={styles.fileInput} required />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Alt Text (optional)</label>
+              <input name="alt" className={styles.input} placeholder="A short description of the image" />
+            </div>
+
+            {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
+
+            <button type="submit" className={styles.btn} disabled={pendingPhoto}>
+              {pendingPhoto ? 'Uploading…' : 'Upload Photo'}
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* Existing publications */}
       <div className={styles.section}>
         <p className={styles.sectionTitle}>Existing Series</p>
@@ -428,90 +512,6 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
           ))}
         </div>
       </div>
-
-      {/* Add series form */}
-      <div className={styles.section}>
-        <p className={styles.sectionTitle}>Add Series</p>
-        <form ref={pubFormRef} className={styles.form} action={handleAddPub}>
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label}>Number</label>
-              <input
-                name="num"
-                className={styles.input}
-                placeholder="01"
-                defaultValue={String(publications.length + 1).padStart(2, '0')}
-                required
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Title</label>
-              <input name="title" className={styles.input} placeholder="Series I" required />
-            </div>
-          </div>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label}>Year</label>
-              <input name="year" className={styles.input} placeholder="2024" required />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label}>Display Order</label>
-              <input name="display_order" type="number" className={styles.input} defaultValue={publications.length} />
-            </div>
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>Essay (optional)</label>
-            <textarea name="essay" className={styles.textarea} placeholder="A short description or essay for this series…" />
-          </div>
-
-          <button type="submit" className={styles.btn} disabled={pendingPub}>
-            {pendingPub ? 'Adding…' : 'Add Series'}
-          </button>
-        </form>
-      </div>
-
-      {/* Upload photo form */}
-      {publications.length > 0 && (
-        <div className={styles.section}>
-          <p className={styles.sectionTitle}>Upload Photo</p>
-          <form ref={photoFormRef} className={styles.form} action={handleUploadPhoto}>
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label className={styles.label}>Series</label>
-                <select name="publication_id" className={styles.select} required>
-                  {publications.map((pub) => (
-                    <option key={pub.id} value={pub.id}>
-                      {pub.num} — {pub.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>Display Order</label>
-                <input name="display_order" type="number" className={styles.input} defaultValue={0} />
-              </div>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Image</label>
-              <input name="file" type="file" accept="image/*" className={styles.fileInput} required />
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Alt Text (optional)</label>
-              <input name="alt" className={styles.input} placeholder="A short description of the image" />
-            </div>
-
-            {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
-
-            <button type="submit" className={styles.btn} disabled={pendingPhoto}>
-              {pendingPhoto ? 'Uploading…' : 'Upload Photo'}
-            </button>
-          </form>
-        </div>
-      )}
     </>
   );
 }
