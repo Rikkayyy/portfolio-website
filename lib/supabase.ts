@@ -11,10 +11,15 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 // For server-side operations with elevated permissions
-export const getSupabaseAdmin = () => {
+export function getSupabaseAdmin() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!serviceRoleKey) {
     throw new Error('Missing Supabase service role key');
   }
-  return createClient<Database>(supabaseUrl, serviceRoleKey);
-};
+  return createClient<Database>(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+}
