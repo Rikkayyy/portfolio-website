@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase-browser';
 import styles from './Admin.module.css';
 import {
   addProject,
@@ -11,7 +11,6 @@ import {
   uploadPhoto,
   deletePhoto,
 } from './actions';
-import { supabase } from '@/lib/supabase';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
 
 interface Props {
@@ -22,12 +21,11 @@ interface Props {
 
 export default function AdminPanel({ projects, publications, userEmail }: Props) {
   const [tab, setTab] = useState<'projects' | 'gallery'>('projects');
-  const router = useRouter();
 
   async function handleSignOut() {
+    const supabase = createClient();
     await supabase.auth.signOut();
-    router.push('/admin/login');
-    router.refresh();
+    window.location.href = '/admin/login';
   }
 
   return (
