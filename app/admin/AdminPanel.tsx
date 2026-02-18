@@ -12,7 +12,6 @@ import {
   deletePublication,
   togglePublicationVisibility,
   updatePublication,
-  uploadPhoto,
   deletePhoto,
 } from './actions';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
@@ -307,17 +306,32 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
     }
   }
 
-  async function handleUploadPhoto(formData: FormData) {
+  async function handleUploadPhoto(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
     setPendingPhoto(true);
     setMsg(null);
-    const result = await uploadPhoto(formData);
-    setPendingPhoto(false);
-    if (result.error) {
-      setMsg({ type: 'error', text: result.error });
-    } else {
-      setMsg({ type: 'success', text: 'Photo uploaded.' });
-      photoFormRef.current?.reset();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch('/api/upload-photo', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await res.json();
+
+      if (result.error) {
+        setMsg({ type: 'error', text: result.error });
+      } else {
+        setMsg({ type: 'success', text: 'Photo uploaded.' });
+        photoFormRef.current?.reset();
+      }
+    } catch {
+      setMsg({ type: 'error', text: 'Upload failed. Please try again.' });
     }
+
+    setPendingPhoto(false);
   }
 
   async function handleDeletePhoto(id: string, imageUrl: string) {
@@ -328,6 +342,8 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
 
   return (
     <>
+      {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
+
       {/* Add series form */}
       <div className={styles.section}>
         <p className={styles.sectionTitle}>Add Series</p>
@@ -375,7 +391,7 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
       {publications.length > 0 && (
         <div className={styles.section}>
           <p className={styles.sectionTitle}>Upload Photo</p>
-          <form ref={photoFormRef} className={styles.form} action={handleUploadPhoto}>
+          <form ref={photoFormRef} className={styles.form} onSubmit={handleUploadPhoto}>
             <div className={styles.row}>
               <div className={styles.field}>
                 <label className={styles.label}>Series</label>
@@ -402,8 +418,6 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
               <label className={styles.label}>Alt Text (optional)</label>
               <input name="alt" className={styles.input} placeholder="A short description of the image" />
             </div>
-
-            {msg && <p className={msg.type === 'error' ? styles.error : styles.success}>{msg.text}</p>}
 
             <button type="submit" className={styles.btn} disabled={pendingPhoto}>
               {pendingPhoto ? 'Uploading…' : 'Upload Photo'}

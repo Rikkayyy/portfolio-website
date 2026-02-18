@@ -6,7 +6,7 @@ import type { Database } from '@/types/supabase';
 
 type ProjectInsert = Database['public']['Tables']['projects']['Insert'];
 type PublicationInsert = Database['public']['Tables']['publications']['Insert'];
-type PhotoInsert = Database['public']['Tables']['photos']['Insert'];
+
 
 // ── Projects ──────────────────────────────────────────────────────────────────
 
@@ -166,46 +166,6 @@ export async function updatePublication(id: string, formData: FormData) {
 }
 
 // ── Photos ────────────────────────────────────────────────────────────────────
-
-export async function uploadPhoto(formData: FormData) {
-  const supabase = getSupabaseAdmin();
-
-  const file = formData.get('file') as File;
-  const publicationId = formData.get('publication_id') as string;
-  const alt = (formData.get('alt') as string) || null;
-  const displayOrder = Number(formData.get('display_order') ?? 0);
-
-  if (!file || !publicationId) return { error: 'Missing file or publication.' };
-
-  // Upload to Supabase Storage
-  const path = `${publicationId}/${Date.now()}-${file.name}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from('gallery')
-    .upload(path, file, { contentType: file.type });
-
-  if (uploadError) return { error: uploadError.message };
-
-  // Build public URL
-  const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path);
-
-  // Insert photo record
-  const photoData: PhotoInsert = {
-    publication_id: publicationId,
-    image_url: urlData.publicUrl,
-    alt,
-    display_order: displayOrder,
-  };
-
-  // @ts-expect-error - Supabase SDK type inference limitation
-  const { error: insertError } = await supabase.from('photos').insert(photoData);
-
-  if (insertError) return { error: insertError.message };
-
-  revalidatePath('/admin');
-  revalidatePath('/gallery');
-  return { success: true };
-}
 
 export async function deletePhoto(id: string, imageUrl: string) {
   const supabase = getSupabaseAdmin();
