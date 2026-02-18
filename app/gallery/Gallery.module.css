@@ -95,7 +95,7 @@
   font-weight: 700;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* ── MAIN ── */
@@ -145,7 +145,7 @@
   font-weight: 700;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.4);
   margin: 0 0 1.8rem;
 }
 
@@ -156,7 +156,7 @@
   font-style: italic;
   line-height: 1.75;
   letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.36);
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
 }
 
@@ -173,7 +173,7 @@
   font-weight: 700;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.4);
   margin: 0 0 1.8rem;
 }
 
@@ -211,7 +211,7 @@
 .tocDash {
   font-family: var(--font-syne), sans-serif;
   font-size: 0.5rem;
-  color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.3);
   flex-shrink: 0;
 }
 
@@ -235,13 +235,13 @@
   font-family: var(--font-syne), sans-serif;
   font-size: 0.44rem;
   letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
 }
 
 .tocArrow {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.35);
   transition: transform 0.25s, color 0.25s;
   flex-shrink: 0;
 }
@@ -342,7 +342,7 @@
   font-weight: 400;
   font-style: italic;
   line-height: 1.85;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
 }
 
@@ -351,7 +351,7 @@
   font-size: 0.44rem;
   font-weight: 600;
   letter-spacing: 0.25em;
-  color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* ── END MARK ── */
@@ -374,7 +374,7 @@
   font-weight: 700;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.3);
   white-space: nowrap;
 }
 
