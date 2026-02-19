@@ -12,6 +12,7 @@ import {
   deletePublication,
   togglePublicationVisibility,
   updatePublication,
+  uploadPhoto,
   deletePhoto,
 } from './actions';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
@@ -315,11 +316,7 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
     const formData = new FormData(form);
 
     try {
-      const res = await fetch('/api/upload-photo', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await res.json();
+      const result = await uploadPhoto(formData);
 
       if (result.error) {
         setMsg({ type: 'error', text: result.error });

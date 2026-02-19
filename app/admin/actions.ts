@@ -161,6 +161,44 @@ export async function updatePublication(id: string, formData: FormData) {
 
 // ── Photos ────────────────────────────────────────────────────────────────────
 
+export async function uploadPhoto(formData: FormData) {
+  const supabase = getSupabaseAdmin();
+
+  const file = formData.get('file') as File | null;
+  const publicationId = formData.get('publication_id') as string;
+  const alt = (formData.get('alt') as string) || null;
+  const displayOrder = Number(formData.get('display_order') ?? 0);
+
+  if (!file || !publicationId) {
+    return { error: 'Missing file or publication.' };
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+  const path = `${publicationId}/${Date.now()}-${safeName}`;
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const { error: uploadError } = await supabase.storage
+    .from('gallery')
+    .upload(path, buffer, { contentType: file.type });
+
+  if (uploadError) return { error: uploadError.message };
+
+  const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path);
+
+  const { error: insertError } = await supabase.from('photos').insert({
+    publication_id: publicationId,
+    image_url: urlData.publicUrl,
+    alt,
+    display_order: displayOrder,
+  });
+
+  if (insertError) return { error: insertError.message };
+
+  revalidatePath('/admin');
+  revalidatePath('/gallery');
+  return { success: true };
+}
+
 export async function deletePhoto(id: string, imageUrl: string) {
   const supabase = getSupabaseAdmin();
 
