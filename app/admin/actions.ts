@@ -50,7 +50,6 @@ export async function toggleProjectVisibility(id: string, visible: boolean) {
   const supabase = getSupabaseAdmin();
   const { error } = await supabase
     .from('projects')
-    // @ts-expect-error - Supabase SDK type inference limitation
     .update({ visible: !visible })
     .eq('id', id);
 
@@ -79,7 +78,6 @@ export async function updateProject(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('projects')
-    // @ts-expect-error - Supabase SDK type inference limitation
     .update(projectData)
     .eq('id', id);
 
@@ -103,7 +101,6 @@ export async function addPublication(formData: FormData) {
     display_order: Number(formData.get('display_order') ?? 0),
   };
 
-  // @ts-expect-error - Supabase SDK type inference limitation
   const { error } = await supabase.from('publications').insert(publicationData);
 
   if (error) return { error: error.message };
@@ -129,7 +126,6 @@ export async function togglePublicationVisibility(id: string, visible: boolean) 
   const supabase = getSupabaseAdmin();
   const { error } = await supabase
     .from('publications')
-    // @ts-expect-error - Supabase SDK type inference limitation
     .update({ visible: !visible })
     .eq('id', id);
 
@@ -153,7 +149,6 @@ export async function updatePublication(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('publications')
-    // @ts-expect-error - Supabase SDK type inference limitation
     .update(publicationData)
     .eq('id', id);
 
