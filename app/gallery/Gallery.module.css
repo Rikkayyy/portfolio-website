@@ -286,6 +286,8 @@
 .cell {
   background: #0f0f0f;
   overflow: hidden;
+  margin: 1.5rem 2.5rem;
+  max-width: 360px;
 }
 
 /* Text / essay column */
