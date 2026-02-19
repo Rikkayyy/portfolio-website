@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import styles from './Gallery.module.css';
 import { FadeIn } from '../components/FadeIn';
+import { PhotoImage } from './PhotoImage';
 import { supabase } from '@/lib/supabase';
 import type { PublicationWithPhotos } from '@/types/supabase';
 
@@ -104,15 +104,7 @@ export default async function GalleryPage() {
                 <div className={styles.photosCol}>
                   {pub.photos.map((photo) => (
                     <div key={photo.id} className={styles.cell}>
-                      <Image
-                        src={photo.image_url}
-                        alt={photo.alt ?? ''}
-                        width={0}
-                        height={0}
-                        quality={90}
-                        style={{ width: '100%', height: 'auto', display: 'block' }}
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
+                      <PhotoImage src={photo.image_url} alt={photo.alt ?? ''} />
                     </div>
                   ))}
                 </div>

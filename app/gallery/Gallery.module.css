@@ -264,6 +264,27 @@
   );
 }
 
+/* ── PHOTO SHIMMER ── */
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.imgWrap {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #111 0%, #1c1c1c 50%, #111 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  min-height: 10rem;
+}
+
+.imgLoaded {
+  background: none;
+  animation: none;
+  min-height: 0;
+}
+
 /* ── PUBLICATION SECTION ── */
 .section {
   scroll-margin-top: 5rem;

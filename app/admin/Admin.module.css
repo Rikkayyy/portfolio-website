@@ -163,6 +163,80 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* ── DROP ZONE ── */
+.dropZone {
+  position: relative;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: #080808;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  min-height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.dropZone:hover,
+.dropZoneDragging {
+  border-color: rgba(0, 229, 255, 0.4);
+  background: rgba(0, 229, 255, 0.03);
+}
+
+/* invisible file input covers the whole zone */
+.dropZone input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.dropHint {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  text-align: center;
+  padding: 1rem;
+}
+
+.uploadPreview {
+  display: block;
+  max-height: 220px;
+  max-width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ── PROGRESS BAR ── */
+.progressWrap {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #00e5ff;
+  transition: width 0.1s linear;
+}
+
+.progressLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.42rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(0, 229, 255, 0.7);
+  text-align: right;
+  display: block;
+  margin-top: 0.3rem;
+}
+
 /* ── BUTTONS ── */
 .btn {
   align-self: flex-start;

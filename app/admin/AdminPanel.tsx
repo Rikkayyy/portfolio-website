@@ -267,9 +267,32 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
   const [pendingPhoto, setPendingPhoto] = useState(false);
   const [msg, setMsg] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const pubFormRef = useRef<HTMLFormElement>(null);
   const photoFormRef = useRef<HTMLFormElement>(null);
   const editFormRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleFileChange(files: FileList | null) {
+    const file = files?.[0];
+    if (!file) { setPreview(null); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (!file?.type.startsWith('image/') || !fileInputRef.current) return;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    fileInputRef.current.files = dt.files;
+    handleFileChange(dt.files);
+  }
 
   async function handleAddPub(formData: FormData) {
     setPendingPub(true);
@@ -335,17 +358,21 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
         return;
       }
 
-      // Step 2: upload directly from browser to Supabase Storage
-      const uploadRes = await fetch(urlResult.signedUrl, {
-        method: 'PUT',
-        headers: { 'Content-Type': file.type },
-        body: file,
+      // Step 2: upload directly from browser to Supabase (with progress)
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 100));
+        });
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error('Upload failed'));
+        });
+        xhr.addEventListener('error', () => reject(new Error('Upload failed')));
+        xhr.open('PUT', urlResult.signedUrl);
+        xhr.setRequestHeader('Content-Type', file.type);
+        xhr.send(file);
       });
-      if (!uploadRes.ok) {
-        setMsg({ type: 'error', text: 'Storage upload failed.' });
-        setPendingPhoto(false);
-        return;
-      }
 
       // Step 3: insert DB record
       const result = await insertPhoto({ publicationId, path: urlResult.path as string, alt, displayOrder });
@@ -354,6 +381,8 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
       } else {
         setMsg({ type: 'success', text: 'Photo uploaded.' });
         photoFormRef.current?.reset();
+        setPreview(null);
+        setUploadProgress(null);
       }
     } catch {
       setMsg({ type: 'error', text: 'Upload failed. Please try again.' });
@@ -439,7 +468,32 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
 
             <div className={styles.field}>
               <label className={styles.label}>Image</label>
-              <input name="file" type="file" accept="image/*" className={styles.fileInput} required />
+              <div
+                className={`${styles.dropZone} ${isDragging ? styles.dropZoneDragging : ''}`}
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={handleDrop}
+              >
+                <input
+                  ref={fileInputRef}
+                  name="file"
+                  type="file"
+                  accept="image/*"
+                  required
+                  onChange={(e) => handleFileChange(e.target.files)}
+                />
+                {preview
+                  ? <img src={preview} alt="Preview" className={styles.uploadPreview} />
+                  : <p className={styles.dropHint}>Drop image here or click to browse</p>}
+              </div>
+              {uploadProgress !== null && (
+                <div>
+                  <div className={styles.progressWrap}>
+                    <div className={styles.progressFill} style={{ width: `${uploadProgress}%` }} />
+                  </div>
+                  <span className={styles.progressLabel}>{uploadProgress}%</span>
+                </div>
+              )}
             </div>
 
             <div className={styles.field}>
