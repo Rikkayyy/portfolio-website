@@ -20,8 +20,8 @@ async function getPublications(): Promise<PublicationWithPhotos[]> {
       photos (*)
     `)
     .eq('visible', true)
-    .order('display_order')
-    .order('display_order', { referencedTable: 'photos' });
+    .order('num', { ascending: true })
+    .order('display_order', { ascending: true, referencedTable: 'photos' });
 
   if (error) {
     console.error('Failed to fetch publications:', error.message);
