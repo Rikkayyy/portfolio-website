@@ -41,6 +41,7 @@ export interface Database {
           visible?: boolean
           created_at?: string
         }
+        Relationships: []
       }
 
       // ── Gallery: individual photos ────────────────────────────────────────────
@@ -69,6 +70,15 @@ export interface Database {
           display_order?: number
           created_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "photos_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "publications"
+            referencedColumns: ["id"]
+          }
+        ]
       }
 
       // ── Projects ──────────────────────────────────────────────────────────────
@@ -109,6 +119,7 @@ export interface Database {
           visible?: boolean
           created_at?: string
         }
+        Relationships: []
       }
     }
     Views: {
