@@ -26,7 +26,6 @@ export async function addProject(formData: FormData) {
     display_order: Number(formData.get('display_order') ?? 0),
   };
 
-  // @ts-expect-error - Supabase SDK type inference limitation
   const { error } = await supabase.from('projects').insert(projectData);
 
   if (error) return { error: error.message };
