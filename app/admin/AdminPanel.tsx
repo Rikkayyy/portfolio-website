@@ -12,7 +12,8 @@ import {
   deletePublication,
   togglePublicationVisibility,
   updatePublication,
-  uploadPhoto,
+  createPhotoUploadUrl,
+  insertPhoto,
   deletePhoto,
 } from './actions';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
@@ -314,10 +315,40 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const file = formData.get('file') as File | null;
+    const publicationId = formData.get('publication_id') as string;
+    const alt = (formData.get('alt') as string) || null;
+    const displayOrder = Number(formData.get('display_order') ?? 0);
+
+    if (!file || !publicationId) {
+      setMsg({ type: 'error', text: 'Missing file or publication.' });
+      setPendingPhoto(false);
+      return;
+    }
 
     try {
-      const result = await uploadPhoto(formData);
+      // Step 1: get a signed upload URL from the server (no file sent to Vercel)
+      const urlResult = await createPhotoUploadUrl(publicationId, file.name);
+      if (!urlResult.signedUrl) {
+        setMsg({ type: 'error', text: urlResult.error ?? 'Failed to get upload URL.' });
+        setPendingPhoto(false);
+        return;
+      }
 
+      // Step 2: upload directly from browser to Supabase Storage
+      const uploadRes = await fetch(urlResult.signedUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      });
+      if (!uploadRes.ok) {
+        setMsg({ type: 'error', text: 'Storage upload failed.' });
+        setPendingPhoto(false);
+        return;
+      }
+
+      // Step 3: insert DB record
+      const result = await insertPhoto({ publicationId, path: urlResult.path as string, alt, displayOrder });
       if (result.error) {
         setMsg({ type: 'error', text: result.error });
       } else {

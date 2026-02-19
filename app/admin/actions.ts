@@ -161,38 +161,39 @@ export async function updatePublication(id: string, formData: FormData) {
 
 // ── Photos ────────────────────────────────────────────────────────────────────
 
-export async function uploadPhoto(formData: FormData) {
+export async function createPhotoUploadUrl(publicationId: string, fileName: string) {
   const supabase = getSupabaseAdmin();
 
-  const file = formData.get('file') as File | null;
-  const publicationId = formData.get('publication_id') as string;
-  const alt = (formData.get('alt') as string) || null;
-  const displayOrder = Number(formData.get('display_order') ?? 0);
-
-  if (!file || !publicationId) {
-    return { error: 'Missing file or publication.' };
-  }
-
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+  const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
   const path = `${publicationId}/${Date.now()}-${safeName}`;
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const { error: uploadError } = await supabase.storage
+  const { data, error } = await supabase.storage
     .from('gallery')
-    .upload(path, buffer, { contentType: file.type });
+    .createSignedUploadUrl(path);
 
-  if (uploadError) return { error: uploadError.message };
+  if (error) return { error: error.message };
 
-  const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path);
+  return { signedUrl: data.signedUrl, path };
+}
 
-  const { error: insertError } = await supabase.from('photos').insert({
-    publication_id: publicationId,
+export async function insertPhoto(data: {
+  publicationId: string;
+  path: string;
+  alt: string | null;
+  displayOrder: number;
+}) {
+  const supabase = getSupabaseAdmin();
+
+  const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(data.path);
+
+  const { error } = await supabase.from('photos').insert({
+    publication_id: data.publicationId,
     image_url: urlData.publicUrl,
-    alt,
-    display_order: displayOrder,
+    alt: data.alt,
+    display_order: data.displayOrder,
   });
 
-  if (insertError) return { error: insertError.message };
+  if (error) return { error: error.message };
 
   revalidatePath('/admin');
   revalidatePath('/gallery');
