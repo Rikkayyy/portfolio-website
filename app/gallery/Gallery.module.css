@@ -284,9 +284,6 @@
 }
 
 .cell {
-  position: relative;
-  flex: 1;
-  min-height: 50vh;
   background: #0f0f0f;
   overflow: hidden;
 }
@@ -419,10 +416,6 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .cell {
-    min-height: 65vw;
-  }
-
   .end {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -439,7 +432,4 @@
     padding: 2.5rem 1.25rem;
   }
 
-  .cell {
-    min-height: 80vw;
-  }
 }

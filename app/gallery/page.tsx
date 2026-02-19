@@ -107,9 +107,10 @@ export default async function GalleryPage() {
                       <Image
                         src={photo.image_url}
                         alt={photo.alt ?? ''}
-                        fill
+                        width={0}
+                        height={0}
                         quality={90}
-                        style={{ objectFit: 'cover' }}
+                        style={{ width: '100%', height: 'auto', display: 'block' }}
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
