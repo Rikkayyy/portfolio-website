@@ -13,7 +13,7 @@ const socials = [
 ];
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -24,19 +24,18 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus('sending');
 
-    // ── Wire up your form submission here ─────────────────────────────────
-    // Options: Resend, Formspree, EmailJS, or a Next.js /api/contact route
-    // Example with Formspree:
-    //   await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(form),
-    //   });
-    //
-    // For now, this simulates a successful send after a short delay:
-    await new Promise((r) => setTimeout(r, 800));
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
 
-    setStatus('sent');
+      if (!res.ok) throw new Error('Failed to send');
+      setStatus('sent');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -58,6 +57,10 @@ export default function ContactPage() {
           {status === 'sent' ? (
             <p className={styles.success}>
               Thanks for reaching out — I&apos;ll get back to you soon.
+            </p>
+          ) : status === 'error' ? (
+            <p className={styles.error}>
+              Something went wrong. Please try again or email me directly.
             </p>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit}>
