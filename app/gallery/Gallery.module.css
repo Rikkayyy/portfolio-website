@@ -297,18 +297,18 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* Photos column — stacked vertically */
+/* Photos column — responsive grid */
 .photosCol {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+  align-content: start;
 }
 
 .cell {
   background: #0f0f0f;
   overflow: hidden;
-  margin: 1.5rem 2.5rem;
-  max-width: 360px;
 }
 
 /* Text / essay column */
