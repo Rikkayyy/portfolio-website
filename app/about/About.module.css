@@ -133,6 +133,29 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* ── SKILL GROUPS ── */
+.skillGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.skillGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skillGroupLabel {
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.4rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 0;
+}
+
 /* ── SKILLS — two-column tag list ── */
 .skills {
   display: flex;

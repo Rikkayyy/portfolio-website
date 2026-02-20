@@ -12,12 +12,14 @@ export default function AboutPage() {
 
   // ── Edit your skills here ─────────────────────────────────────────────────
   const devSkills = [
-    'TypeScript', 'React', 'Next.js', 'Node.js',
-    'PostgreSQL', 'Supabase', 'Tailwind CSS', 'Git',
+    { label: 'Languages',             skills: ['Python', 'C++', 'JavaScript', 'HTML/CSS', 'R', 'SQL', 'TypeScript'] },
+    { label: 'Frameworks & Libraries', skills: ['React', 'Next.js', 'Node.js', 'Express', 'Jest', 'Tailwind CSS'] },
+    { label: 'Databases & Storage',   skills: ['MySQL', 'MongoDB', 'Supabase', 'AWS S3'] },
+    { label: 'Tools & Platforms',     skills: ['GitHub', 'VS Code', 'PyCharm', 'Jupyter', 'Jenkins', 'WSL'] },
   ];
 
   const photoSkills = [
-    'Portrait', 'Landscape', 'Film', 'Lightroom', 'Capture One',
+    'Portrait', 'Landscape', 'Lightroom',
   ];
 
   return (
@@ -63,9 +65,16 @@ export default function AboutPage() {
         <FadeIn delay={100}>
           <section className={styles.section}>
             <p className={styles.sectionLabel}>Development</p>
-            <div className={styles.skills}>
-              {devSkills.map((s) => (
-                <span key={s} className={styles.skill}>{s}</span>
+            <div className={styles.skillGroups}>
+              {devSkills.map((group) => (
+                <div key={group.label} className={styles.skillGroup}>
+                  <p className={styles.skillGroupLabel}>{group.label}</p>
+                  <div className={styles.skills}>
+                    {group.skills.map((s) => (
+                      <span key={s} className={styles.skill}>{s}</span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </section>
