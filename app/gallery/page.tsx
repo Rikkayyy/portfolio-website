@@ -5,12 +5,9 @@ import { supabase } from '@/lib/supabase';
 import type { PublicationWithPhotos } from '@/types/supabase';
 
 // ── Artist statement ───────────────────────────────────────────────────────────
-// Replace this with your own words. Shown in the "Statement" section above the
-// gallery series. It stays hardcoded here since it describes you, not a series.
-const STATEMENT = `A visual journal exploring light, space, and the human form.
-Each series is a meditation on a singular subject — an attempt
-to distill the complexity of a moment into something essential
-and still.`;
+const STATEMENT = `A visual journal going through my journey as a photographer.
+How I started, what I&aposm exploring now, and what has caught my eye recently.
+The series are loosely organized around themes, subjects, or techniques that shape the style of my work.`;
 
 async function getPublications(): Promise<PublicationWithPhotos[]> {
   const { data, error } = await supabase
