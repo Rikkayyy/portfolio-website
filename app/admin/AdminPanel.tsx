@@ -17,15 +17,17 @@ import {
   deletePhoto,
 } from './actions';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
+import type { PageView } from './actions';
 
 interface Props {
   projects: Project[];
   publications: PublicationWithPhotos[];
+  pageViews: PageView[];
   userEmail: string;
 }
 
-export default function AdminPanel({ projects, publications, userEmail }: Props) {
-  const [tab, setTab] = useState<'projects' | 'gallery'>('projects');
+export default function AdminPanel({ projects, publications, pageViews, userEmail }: Props) {
+  const [tab, setTab] = useState<'projects' | 'gallery' | 'visitors'>('projects');
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -60,10 +62,17 @@ export default function AdminPanel({ projects, publications, userEmail }: Props)
           >
             Gallery
           </button>
+          <button
+            className={`${styles.tab} ${tab === 'visitors' ? styles.tabActive : ''}`}
+            onClick={() => setTab('visitors')}
+          >
+            Visitors
+          </button>
         </div>
 
         {tab === 'projects' && <ProjectsTab projects={projects} />}
         {tab === 'gallery' && <GalleryTab publications={publications} />}
+        {tab === 'visitors' && <VisitorsTab pageViews={pageViews} />}
       </main>
     </div>
   );
@@ -257,6 +266,55 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
         </div>
       </div>
     </>
+  );
+}
+
+// ── Visitors Tab ──────────────────────────────────────────────────────────────
+
+function VisitorsTab({ pageViews }: { pageViews: PageView[] }) {
+  return (
+    <div className={styles.section}>
+      <p className={styles.sectionTitle}>Recent Visitors ({pageViews.length})</p>
+      {pageViews.length === 0 && <p className={styles.empty}>No visits recorded yet.</p>}
+      {pageViews.length > 0 && (
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #333', textAlign: 'left' }}>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>Time</th>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>Page</th>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>Location</th>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>IP</th>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>Referrer</th>
+                <th style={{ padding: '0.5rem 0.75rem', color: '#999', fontWeight: 500 }}>Browser</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pageViews.map((v) => (
+                <tr key={v.id} style={{ borderBottom: '1px solid #1a1a1a' }}>
+                  <td style={{ padding: '0.5rem 0.75rem', whiteSpace: 'nowrap', color: '#aaa' }}>
+                    {new Date(v.visited_at).toLocaleString()}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.75rem', fontFamily: 'monospace' }}>{v.page}</td>
+                  <td style={{ padding: '0.5rem 0.75rem', whiteSpace: 'nowrap' }}>
+                    {[v.city, v.country].filter(Boolean).join(', ') || '—'}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.75rem', fontFamily: 'monospace', color: '#aaa' }}>
+                    {v.ip ?? '—'}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.75rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#aaa' }}>
+                    {v.referrer || '—'}
+                  </td>
+                  <td style={{ padding: '0.5rem 0.75rem', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#aaa' }}>
+                    {v.user_agent ?? '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -6,7 +6,20 @@ import type { Database } from '@/types/supabase';
 
 type ProjectInsert = Database['public']['Tables']['projects']['Insert'];
 type PublicationInsert = Database['public']['Tables']['publications']['Insert'];
+export type PageView = Database['public']['Tables']['page_views']['Row'];
 
+
+// ── Page Views ────────────────────────────────────────────────────────────────
+
+export async function getPageViews(limit = 200): Promise<PageView[]> {
+  const supabase = getSupabaseAdmin();
+  const { data } = await supabase
+    .from('page_views')
+    .select('*')
+    .order('visited_at', { ascending: false })
+    .limit(limit);
+  return (data ?? []) as PageView[];
+}
 
 // ── Projects ──────────────────────────────────────────────────────────────────
 

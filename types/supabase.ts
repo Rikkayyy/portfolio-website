@@ -81,6 +81,41 @@ export interface Database {
         ]
       }
 
+      // ── Page Views ───────────────────────────────────────────────────────────
+      page_views: {
+        Row: {
+          id: number
+          visited_at: string
+          page: string
+          ip: string | null
+          country: string | null
+          city: string | null
+          user_agent: string | null
+          referrer: string | null
+        }
+        Insert: {
+          id?: never
+          visited_at?: string
+          page: string
+          ip?: string | null
+          country?: string | null
+          city?: string | null
+          user_agent?: string | null
+          referrer?: string | null
+        }
+        Update: {
+          id?: never
+          visited_at?: string
+          page?: string
+          ip?: string | null
+          country?: string | null
+          city?: string | null
+          user_agent?: string | null
+          referrer?: string | null
+        }
+        Relationships: []
+      }
+
       // ── Projects ──────────────────────────────────────────────────────────────
       projects: {
         Row: {
@@ -141,6 +176,7 @@ export interface Database {
 export type Publication = Database['public']['Tables']['publications']['Row']
 export type Photo = Database['public']['Tables']['photos']['Row']
 export type Project = Database['public']['Tables']['projects']['Row']
+export type PageView = Database['public']['Tables']['page_views']['Row']
 
 // Publication with its photos nested (returned by Supabase select with join)
 export type PublicationWithPhotos = Publication & {

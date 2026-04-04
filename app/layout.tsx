@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display, Syne } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "./components/NavBar";
+import { VisitTracker } from "./components/VisitTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +42,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${syne.variable} antialiased`}
       >
+        <VisitTracker />
         <NavBar />
         {children}
       </body>

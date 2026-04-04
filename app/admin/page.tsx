@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from '@/lib/supabase';
 import { redirect } from 'next/navigation';
 import AdminPanel from './AdminPanel';
+import { getPageViews } from './actions';
 import type { Project, PublicationWithPhotos } from '@/types/supabase';
 
 export const dynamic = 'force-dynamic';
@@ -38,10 +39,13 @@ export default async function AdminPage() {
     photos: (pub.photos ?? []).sort((a: any, b: any) => a.display_order - b.display_order),
   })) as PublicationWithPhotos[];
 
+  const pageViews = await getPageViews();
+
   return (
     <AdminPanel
       projects={(projects ?? []) as any}
       publications={publicationsWithSortedPhotos}
+      pageViews={pageViews}
       userEmail={user.email ?? ''}
     />
   );
