@@ -98,6 +98,10 @@ export default function AboutPage() {
           <div className={styles.endLine} />
         </div>
 
+        <p className={styles.privacy}>
+          This site collects anonymous analytics.
+        </p>
+
       </main>
     </div>
   );

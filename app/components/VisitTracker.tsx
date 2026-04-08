@@ -1,10 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useTrackVisit } from '@/app/hooks/useTrackVisit';
+import { trackVisit } from '@/app/actions/trackVisit';
 
 export function VisitTracker() {
   const path = usePathname();
-  useTrackVisit(path);
+
+  useEffect(() => {
+    // Skip tracking for admin users (Supabase auth cookies present)
+    const hasAuthCookie = document.cookie.split(';').some(c =>
+      c.trim().startsWith('sb-') && c.includes('auth-token')
+    );
+    if (!hasAuthCookie) {
+      trackVisit(path, document.referrer, navigator.userAgent);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return null;
 }
