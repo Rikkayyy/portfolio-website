@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './SplitWorld.module.css';
+import { FEATURED } from '../data/featured';
 
 type WorldState = 'default' | 'photo-hover' | 'dev-hover' | 'entering-photo' | 'entering-dev';
 type CursorType = 'default' | 'photo' | 'dev' | 'enter';
@@ -292,22 +293,19 @@ export function SplitWorld() {
                 <div className={styles.termDot} />
                 <div className={styles.termDot} />
                 <div className={styles.termDot} />
-                <span className={styles.termTitle}>rikki ~ portfolio</span>
+                <span className={styles.termTitle}>rikki ~ featured</span>
               </div>
               <div className={styles.terminalBody}>
                 <span className={styles.termLine}>
                   <span className={styles.termPrompt}>~ </span>
-                  <span className={styles.termCmd}>npm run dev</span>
+                  <span className={styles.termCmd}>ls featured/</span>
                 </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termOut}>▶ Next.js 16 ready</span>
-                </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termOut}>▶ Supabase connected</span>
-                </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termSuccess}>✓ localhost:3000</span>
-                </span>
+                {FEATURED.map((proj) => (
+                  <span key={proj.slug} className={styles.termProject}>
+                    <span className={styles.termProjectName}>▶ {proj.title}</span>
+                    <span className={styles.termOut}>{proj.tagline}</span>
+                  </span>
+                ))}
                 <span className={styles.termLine}>
                   <span className={styles.termPrompt}>~ </span>
                   <span className={styles.termCursor} />
