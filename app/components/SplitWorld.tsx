@@ -16,6 +16,12 @@ const SPLIT = {
   'entering-dev':   { photo: '0%',  dev: '100%', divider: '0%'   },
 } as const;
 
+const PROFILE_LINKS = [
+  { label: 'Resume',   href: '/Rikki-Casupanan-Resume.pdf' },
+  { label: 'GitHub',   href: 'https://github.com/Rikkayyy' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/rikkicasupanan' },
+];
+
 export function SplitWorld() {
   const router = useRouter();
   const [worldState, setWorldState] = useState<WorldState>('default');
@@ -24,14 +30,12 @@ export function SplitWorld() {
 
   // Load-in opacity (replaces CSS animation fill for togglable elements)
   const [dividerVisible,    setDividerVisible]    = useState(false);
-  const [centerNameVisible, setCenterNameVisible] = useState(false);
   const [hintVisible,       setHintVisible]       = useState(false);
 
   useEffect(() => {
     const t1 = setTimeout(() => setDividerVisible(true),    400);
-    const t2 = setTimeout(() => setCenterNameVisible(true), 600);
     const t3 = setTimeout(() => setHintVisible(true),      1000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => { clearTimeout(t1); clearTimeout(t3); };
   }, []);
 
   useEffect(() => {
@@ -53,7 +57,7 @@ export function SplitWorld() {
 
   // Derived opacity values
   const dividerOp    = dividerVisible    && !isEntering             ? 1 : 0;
-  const centerNameOp = centerNameVisible && !isEntering             ? 1 : 0;
+  const centerNameOp = !isEntering                                  ? 1 : 0;
   const hintOp       = hintVisible       && worldState === 'default' ? 1 : 0;
   const backOp       = isEntering                                    ? 1 : 0;
 
@@ -110,13 +114,28 @@ export function SplitWorld() {
       {/* Noise overlay */}
       <div className={styles.noise} />
 
-      {/* Center name */}
-      <div
-        className={styles.centerName}
-        style={{ opacity: centerNameOp, transition: 'opacity 0.4s' }}
-      >
-        <span className={styles.centerNameText}>Rikki Casupanan</span>
-      </div>
+      {/* Center identity — wrapper fades in via CSS so it shows without JS; inner hides while entering */}
+      <header className={styles.centerName}>
+        <div style={{ opacity: centerNameOp, transition: 'opacity 0.4s' }}>
+          <h1 className={styles.centerNameText}>Rikki Casupanan</h1>
+          <p className={styles.centerRole}>Software Developer · MS CS @ Georgia Tech</p>
+          <nav className={styles.centerLinks} aria-label="Profile links">
+            {PROFILE_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.centerLink}
+                onMouseEnter={onEnterBtnEnter}
+                onMouseLeave={onEnterBtnLeave}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
 
       {/* Hint */}
       <div
