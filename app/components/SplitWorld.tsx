@@ -28,6 +28,7 @@ export function SplitWorld() {
   const [worldState, setWorldState] = useState<WorldState>('default');
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
   const [cursorType, setCursorType] = useState<CursorType>('default');
+  const [cursorInside, setCursorInside] = useState(false);
 
   // Load-in opacity (replaces CSS animation fill for togglable elements)
   const [dividerVisible,    setDividerVisible]    = useState(false);
@@ -108,9 +109,16 @@ export function SplitWorld() {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Custom cursor */}
-      <div className={cursorClass} style={{ left: cursorPos.x, top: cursorPos.y }} />
+    <div
+      className={styles.container}
+      onMouseEnter={() => setCursorInside(true)}
+      onMouseLeave={() => setCursorInside(false)}
+    >
+      {/* Custom cursor — only while the pointer is over the hero */}
+      <div
+        className={cursorClass}
+        style={{ left: cursorPos.x, top: cursorPos.y, opacity: cursorInside ? 1 : 0 }}
+      />
 
       {/* Noise overlay */}
       <div className={styles.noise} />
@@ -149,6 +157,18 @@ export function SplitWorld() {
           <span className={styles.hintArrow}>→</span>
         </p>
       </div>
+
+      {/* Scroll cue to the server-rendered work section */}
+      {!isEntering && (
+        <a
+          href="#work"
+          className={styles.scrollCue}
+          onMouseEnter={onEnterBtnEnter}
+          onMouseLeave={onEnterBtnLeave}
+        >
+          Selected work ↓
+        </a>
+      )}
 
       {/* Back button */}
       <a

@@ -1,7 +1,8 @@
 /* ── CONTAINER ── */
 .container {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   cursor: none;
 }
@@ -51,7 +52,7 @@
 
 /* ── WORLD WRAPPER ── */
 .world {
-  position: fixed;
+  position: absolute;
   inset: 0;
 }
 
@@ -825,7 +826,7 @@
 
 /* ── CENTER NAME ── */
 .centerName {
-  position: fixed;
+  position: absolute;
   top: 2rem;
   left: 50%;
   transform: translateX(-50%);
@@ -892,8 +893,8 @@
 
 /* ── HINT ── */
 .hint {
-  position: fixed;
-  bottom: 2rem;
+  position: absolute;
+  bottom: 4.6rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
@@ -925,9 +926,38 @@
   100% { transform: translateX(3px);  }
 }
 
+/* ── SCROLL CUE ── */
+.scrollCue {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  cursor: none;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 8, 8, 0.55);
+  padding: 0.5rem 1rem;
+  animation: fadeIn 0.6s 1s ease both;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.scrollCue:hover,
+.scrollCue:focus-visible {
+  color: #f2f2f2;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
 /* ── BACK BUTTON ── */
 .backBtn {
-  position: fixed;
+  position: absolute;
   top: 2rem;
   left: 2rem;
   z-index: 300;
