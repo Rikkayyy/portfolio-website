@@ -281,7 +281,7 @@ export function SplitWorld() {
                   <span className={styles.termCmd}>npm run dev</span>
                 </span>
                 <span className={styles.termLine}>
-                  <span className={styles.termOut}>▶ Next.js 15 ready</span>
+                  <span className={styles.termOut}>▶ Next.js 16 ready</span>
                 </span>
                 <span className={styles.termLine}>
                   <span className={styles.termOut}>▶ Supabase connected</span>
@@ -301,7 +301,7 @@ export function SplitWorld() {
               Devel&shy;oper
               <em>through the code</em>
             </h2>
-            <p className={styles.devSub}>Next.js · TypeScript · Supabase · Stripe</p>
+            <p className={styles.devSub}>Java · Spring Boot · React · TypeScript · PostgreSQL</p>
             <a
               href="/projects"
               className={styles.enterBtnDev}
