@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import styles from './About.module.css';
 import { FadeIn } from '../components/FadeIn';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Rikki Casupanan — Software Developer in Houston, TX. Experience, education, and skills.',
+};
 
 export default function AboutPage() {
   // ── Edit your facts here ──────────────────────────────────────────────────

@@ -1,6 +1,12 @@
+import type { Metadata } from 'next';
 import styles from './Projects.module.css';
 import { supabase } from '@/lib/supabase';
 import type { Project } from '@/types/supabase';
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description: 'Software projects by Rikki Casupanan: full-stack apps, open-source contributions, and client work.',
+};
 
 async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase

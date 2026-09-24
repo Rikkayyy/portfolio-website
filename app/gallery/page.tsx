@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
 import styles from './Gallery.module.css';
 import { FadeIn } from '../components/FadeIn';
 import { PhotoImage } from './PhotoImage';
 import { supabase } from '@/lib/supabase';
 import type { PublicationWithPhotos } from '@/types/supabase';
+
+export const metadata: Metadata = {
+  title: 'Photography',
+  description: 'Photography by Rikki Casupanan: portraits, landscapes, and fine art prints.',
+};
 
 // ── Artist statement ───────────────────────────────────────────────────────────
 const STATEMENT = `A visual journal going through my journey as a photographer.
