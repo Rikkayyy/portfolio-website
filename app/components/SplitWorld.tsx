@@ -17,6 +17,9 @@ const SPLIT = {
   'entering-dev':   { photo: '0%',  dev: '100%', divider: '0%'   },
 } as const;
 
+// Keep in sync with the compact-layout media query in SplitWorld.module.css
+const COMPACT_QUERY = '(hover: none), (max-width: 768px)';
+
 const PROFILE_LINKS = [
   { label: 'Resume',   href: '/Rikki-Casupanan-Resume.pdf' },
   { label: 'GitHub',   href: 'https://github.com/Rikkayyy' },
@@ -88,8 +91,12 @@ export function SplitWorld() {
   const onEnterBtnEnter = useCallback(() => setCursorType('enter'), []);
   const onEnterBtnLeave = useCallback(() => setCursorType('default'), []);
 
+  // Touch devices and narrow screens get the stacked layout — navigate without the expand animation
+  const isCompact = () => window.matchMedia(COMPACT_QUERY).matches;
+
   const handleEnterPhoto = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (isCompact()) { router.push('/gallery'); return; }
     setWorldState('entering-photo');
     setCursorType('default');
     setTimeout(() => router.push('/gallery'), 900);
@@ -97,6 +104,7 @@ export function SplitWorld() {
 
   const handleEnterDev = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (isCompact()) { router.push('/projects'); return; }
     setWorldState('entering-dev');
     setCursorType('default');
     setTimeout(() => router.push('/projects'), 900);
@@ -110,7 +118,7 @@ export function SplitWorld() {
 
   return (
     <div
-      className={styles.container}
+      className={`${styles.container} ${worldState === 'default' ? styles.stateDefault : ''}`}
       onMouseEnter={() => setCursorInside(true)}
       onMouseLeave={() => setCursorInside(false)}
     >
