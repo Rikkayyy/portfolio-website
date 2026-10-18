@@ -1,21 +1,36 @@
+import type { Metadata } from 'next';
 import styles from './About.module.css';
 import { FadeIn } from '../components/FadeIn';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Rikki Casupanan — Software Developer in Houston, TX. Experience, education, and skills.',
+};
 
 export default function AboutPage() {
   // ── Edit your facts here ──────────────────────────────────────────────────
   const facts = [
-    { key: 'Based in', value: 'Houston, Texas' },
-    { key: 'Currently', value: 'Open to new opportunities' },
-    { key: 'Background', value: 'Software development & photography' },
-    { key: 'Education', value: 'B.S. Computer Science — University of Houston' },
+    { key: 'Based in',      value: 'Houston, Texas' },
+    { key: 'Currently',     value: 'Software Developer I — Piping Technology & Products (Sep 2026 – Present)' },
+    { key: 'Previously',    value: 'AI Intern — Piping Technology & Products (Jul – Sep 2026)' },
+    { key: 'Education',     value: 'M.S. Computer Science — Georgia Tech (Aug 2026 – May 2028)' },
+    { key: '',              value: 'B.S. Computer Science, Cum Laude — University of Houston (2020 – 2025)' },
+    { key: 'Certification', value: 'AWS Certified Cloud Practitioner (Nov 2025)' },
   ];
 
   // ── Edit your skills here ─────────────────────────────────────────────────
   const devSkills = [
-    { label: 'Languages',             skills: ['Python', 'C++', 'JavaScript', 'HTML/CSS', 'R', 'SQL', 'TypeScript'] },
-    { label: 'Frameworks & Libraries', skills: ['React', 'Next.js', 'Node.js', 'Express', 'Jest', 'Tailwind CSS'] },
-    { label: 'Databases & Storage',   skills: ['MySQL', 'MongoDB', 'Supabase', 'AWS S3'] },
-    { label: 'Tools & Platforms',     skills: ['GitHub', 'VS Code', 'PyCharm', 'Jupyter', 'Jenkins', 'WSL'] },
+    { label: 'Languages',              skills: ['C++', 'C#', 'Java', 'JavaScript/TypeScript', 'Python', 'R', 'SQL'] },
+    { label: 'Frameworks & Libraries', skills: ['ASP.NET Core', 'Express', 'Maven', 'Next.js', 'Node.js', 'React', 'Spring Boot', 'Tailwind CSS'] },
+    { label: 'Databases & Storage',    skills: ['MySQL', 'PostgreSQL', 'MongoDB', 'Supabase', 'AWS S3'] },
+    { label: 'Tools & Platforms',      skills: ['AWS', 'Docker', 'GitHub', 'VS Code'] },
+  ];
+
+  const links = [
+    { label: 'Resume (PDF)', href: '/Rikki-Casupanan-Resume.pdf' },
+    { label: 'GitHub',       href: 'https://github.com/Rikkayyy' },
+    { label: 'LinkedIn',     href: 'https://linkedin.com/in/rikkicasupanan' },
+    { label: 'Email',        href: 'mailto:rikkicasupanan.dev@gmail.com' },
   ];
 
   const photoSkills = [
@@ -35,10 +50,26 @@ export default function AboutPage() {
         {/* Bio — replace with your own words */}
         <FadeIn delay={250}>
           <p className={styles.bio}>
-            I&apos;m a developer and photographer based in Houston, Texas.
-            I enjoy building full-stack apps and take photos once in a while. I have a passion for building applications that solve real-world
-            problems in healthcare, energy, or technology. Photography-wise portraits, light, plants, and clouds have been catching my eye lately.
+            I&apos;m a software developer at Piping Technology &amp; Products in Houston, Texas, and an
+            MS Computer Science student at Georgia Tech. I build full-stack apps — most recently CardSync,
+            a personal finance app built with Spring Boot, React, and PostgreSQL. I have a passion for
+            building applications that solve real-world problems in healthcare, energy, or technology.
+            Outside of code I take photos: portraits, light, plants, and clouds have been catching my eye lately.
           </p>
+          <nav className={styles.links} aria-label="Resume and profiles">
+            {links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className={styles.link}
+                {...(link.href.startsWith('http') || link.href.endsWith('.pdf')
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
+              >
+                {link.label} →
+              </a>
+            ))}
+          </nav>
         </FadeIn>
 
         <FadeIn delay={350}>
@@ -51,7 +82,7 @@ export default function AboutPage() {
             <p className={styles.sectionLabel}>Currently</p>
             <div className={styles.facts}>
               {facts.map((f) => (
-                <div key={f.key} className={styles.fact}>
+                <div key={f.value} className={styles.fact}>
                   <span className={styles.factKey}>{f.key}</span>
                   <span className={styles.factValue}>{f.value}</span>
                 </div>

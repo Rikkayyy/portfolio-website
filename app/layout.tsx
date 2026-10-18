@@ -27,9 +27,28 @@ const syne = Syne({
   weight: ["400", "500", "700", "800"],
 });
 
+const description =
+  "Rikki Casupanan is a Software Developer at Piping Technology & Products and an MS CS student at Georgia Tech, building full-stack apps with Java/Spring Boot, React, TypeScript, and PostgreSQL.";
+
 export const metadata: Metadata = {
-  title: "Rikki",
-  description: "Photography & Development",
+  metadataBase: new URL("https://rikkicasupanan.com"),
+  title: {
+    default: "Rikki Casupanan — Software Developer",
+    template: "%s — Rikki Casupanan",
+  },
+  description,
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Rikki Casupanan",
+    title: "Rikki Casupanan — Software Developer",
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rikki Casupanan — Software Developer",
+    description,
+  },
 };
 
 export default function RootLayout({

@@ -1,7 +1,8 @@
 /* ── CONTAINER ── */
 .container {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   cursor: none;
 }
@@ -51,7 +52,7 @@
 
 /* ── WORLD WRAPPER ── */
 .world {
-  position: fixed;
+  position: absolute;
   inset: 0;
 }
 
@@ -694,6 +695,26 @@
   letter-spacing: 0.05em;
 }
 
+.termProject {
+  display: block;
+  font-family: var(--font-syne), monospace;
+  font-size: 0.66rem;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  margin: 0.45rem 0;
+}
+
+.termProjectName {
+  display: block;
+  color: rgba(224, 244, 248, 0.88);
+  font-weight: 700;
+}
+
+.termProject .termOut {
+  display: block;
+  color: rgba(0, 229, 255, 0.55);
+}
+
 .termPrompt  { color: rgba(0, 229, 255, 0.22); }
 .termCmd     { color: rgba(0, 229, 255, 0.68); }
 .termOut     { color: rgba(0, 229, 255, 0.32); padding-left: 1rem; }
@@ -805,13 +826,19 @@
 
 /* ── CENTER NAME ── */
 .centerName {
-  position: fixed;
+  position: absolute;
   top: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
   pointer-events: none;
-  transition: opacity 0.4s;
+  text-align: center;
+  animation: fadeIn 0.6s 0.6s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .centerNameText {
@@ -820,14 +847,54 @@
   font-weight: 400;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.72);
   white-space: nowrap;
+}
+
+.centerRole {
+  margin-top: 0.55rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+}
+
+.centerLinks {
+  margin-top: 0.9rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.centerLink {
+  pointer-events: auto;
+  cursor: none;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 8, 8, 0.55);
+  padding: 0.45rem 0.85rem;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.centerLink:hover,
+.centerLink:focus-visible {
+  color: #f2f2f2;
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 /* ── HINT ── */
 .hint {
-  position: fixed;
-  bottom: 2rem;
+  position: absolute;
+  bottom: 4.6rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
@@ -859,9 +926,38 @@
   100% { transform: translateX(3px);  }
 }
 
+/* ── SCROLL CUE ── */
+.scrollCue {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  cursor: none;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(8, 8, 8, 0.55);
+  padding: 0.5rem 1rem;
+  animation: fadeIn 0.6s 1s ease both;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.scrollCue:hover,
+.scrollCue:focus-visible {
+  color: #f2f2f2;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
 /* ── BACK BUTTON ── */
 .backBtn {
-  position: fixed;
+  position: absolute;
   top: 2rem;
   left: 2rem;
   z-index: 300;
@@ -893,4 +989,122 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   opacity: 0.022;
   mix-blend-mode: overlay;
+}
+
+/* ── DEFAULT STATE: developer side shows its content without hover ── */
+.stateDefault .sideDev .terminal,
+.stateDefault .sideDev .devEyebrow,
+.stateDefault .sideDev .devTitle,
+.stateDefault .sideDev .devSub,
+.stateDefault .sideDev .enterBtnDev {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════════════
+   COMPACT — touch devices and narrow screens
+   Stacked layout, developer first, no hover reveal or custom cursor.
+   Keep in sync with COMPACT_QUERY in SplitWorld.tsx.
+══════════════════════════════════════ */
+@media (hover: none), (max-width: 768px) {
+  .container {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .container,
+  .container * {
+    cursor: revert !important;
+  }
+
+  .cursor,
+  .hint,
+  .divider,
+  .sideLabel,
+  .photoCards,
+  .devCards,
+  .photoIdx,
+  .photoYear,
+  .scrollCue {
+    display: none;
+  }
+
+  .world {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Inline widths drive the desktop split; override them when stacked */
+  .side {
+    position: relative;
+    width: 100% !important;
+    animation: none;
+  }
+
+  .sideDev {
+    order: -1;
+    padding-top: 10.5rem;
+  }
+
+  .sidePhoto {
+    padding-bottom: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .devContent,
+  .photoContent {
+    position: relative;
+    inset: auto;
+    padding: 2.5rem 1.25rem;
+  }
+
+  .photoContent {
+    align-items: flex-start;
+  }
+
+  /* Reveal everything that is hover-only on desktop */
+  .terminal,
+  .devEyebrow,
+  .devTitle,
+  .devSub,
+  .enterBtnDev,
+  .photoEyebrow,
+  .photoTitle,
+  .photoDesc,
+  .enterBtn {
+    opacity: 1;
+    transform: none;
+  }
+
+  .terminal {
+    max-width: 100%;
+  }
+
+  .devTitle {
+    font-size: 2.6rem;
+  }
+
+  .photoTitle {
+    font-size: 2.2rem;
+  }
+
+  .centerName {
+    width: calc(100% - 2.5rem);
+    top: 1.75rem;
+  }
+
+  .centerRole {
+    white-space: normal;
+    line-height: 1.6;
+  }
+
+  .centerLinks {
+    flex-wrap: wrap;
+  }
+
+  .centerLink {
+    padding: 0.6rem 0.9rem;
+  }
 }

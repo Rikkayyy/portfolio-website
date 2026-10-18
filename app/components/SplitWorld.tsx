@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './SplitWorld.module.css';
+import { FEATURED } from '../data/featured';
 
 type WorldState = 'default' | 'photo-hover' | 'dev-hover' | 'entering-photo' | 'entering-dev';
 type CursorType = 'default' | 'photo' | 'dev' | 'enter';
@@ -16,22 +17,30 @@ const SPLIT = {
   'entering-dev':   { photo: '0%',  dev: '100%', divider: '0%'   },
 } as const;
 
+// Keep in sync with the compact-layout media query in SplitWorld.module.css
+const COMPACT_QUERY = '(hover: none), (max-width: 768px)';
+
+const PROFILE_LINKS = [
+  { label: 'Resume',   href: '/Rikki-Casupanan-Resume.pdf' },
+  { label: 'GitHub',   href: 'https://github.com/Rikkayyy' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/rikkicasupanan' },
+];
+
 export function SplitWorld() {
   const router = useRouter();
   const [worldState, setWorldState] = useState<WorldState>('default');
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
   const [cursorType, setCursorType] = useState<CursorType>('default');
+  const [cursorInside, setCursorInside] = useState(false);
 
   // Load-in opacity (replaces CSS animation fill for togglable elements)
   const [dividerVisible,    setDividerVisible]    = useState(false);
-  const [centerNameVisible, setCenterNameVisible] = useState(false);
   const [hintVisible,       setHintVisible]       = useState(false);
 
   useEffect(() => {
     const t1 = setTimeout(() => setDividerVisible(true),    400);
-    const t2 = setTimeout(() => setCenterNameVisible(true), 600);
     const t3 = setTimeout(() => setHintVisible(true),      1000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => { clearTimeout(t1); clearTimeout(t3); };
   }, []);
 
   useEffect(() => {
@@ -53,7 +62,7 @@ export function SplitWorld() {
 
   // Derived opacity values
   const dividerOp    = dividerVisible    && !isEntering             ? 1 : 0;
-  const centerNameOp = centerNameVisible && !isEntering             ? 1 : 0;
+  const centerNameOp = !isEntering                                  ? 1 : 0;
   const hintOp       = hintVisible       && worldState === 'default' ? 1 : 0;
   const backOp       = isEntering                                    ? 1 : 0;
 
@@ -82,8 +91,12 @@ export function SplitWorld() {
   const onEnterBtnEnter = useCallback(() => setCursorType('enter'), []);
   const onEnterBtnLeave = useCallback(() => setCursorType('default'), []);
 
+  // Touch devices and narrow screens get the stacked layout — navigate without the expand animation
+  const isCompact = () => window.matchMedia(COMPACT_QUERY).matches;
+
   const handleEnterPhoto = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (isCompact()) { router.push('/gallery'); return; }
     setWorldState('entering-photo');
     setCursorType('default');
     setTimeout(() => router.push('/gallery'), 900);
@@ -91,6 +104,7 @@ export function SplitWorld() {
 
   const handleEnterDev = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (isCompact()) { router.push('/projects'); return; }
     setWorldState('entering-dev');
     setCursorType('default');
     setTimeout(() => router.push('/projects'), 900);
@@ -103,20 +117,42 @@ export function SplitWorld() {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Custom cursor */}
-      <div className={cursorClass} style={{ left: cursorPos.x, top: cursorPos.y }} />
+    <div
+      className={`${styles.container} ${worldState === 'default' ? styles.stateDefault : ''}`}
+      onMouseEnter={() => setCursorInside(true)}
+      onMouseLeave={() => setCursorInside(false)}
+    >
+      {/* Custom cursor — only while the pointer is over the hero */}
+      <div
+        className={cursorClass}
+        style={{ left: cursorPos.x, top: cursorPos.y, opacity: cursorInside ? 1 : 0 }}
+      />
 
       {/* Noise overlay */}
       <div className={styles.noise} />
 
-      {/* Center name */}
-      <div
-        className={styles.centerName}
-        style={{ opacity: centerNameOp, transition: 'opacity 0.4s' }}
-      >
-        <span className={styles.centerNameText}>Rikki Casupanan</span>
-      </div>
+      {/* Center identity — wrapper fades in via CSS so it shows without JS; inner hides while entering */}
+      <header className={styles.centerName}>
+        <div style={{ opacity: centerNameOp, transition: 'opacity 0.4s' }}>
+          <h1 className={styles.centerNameText}>Rikki Casupanan</h1>
+          <p className={styles.centerRole}>Software Developer · MS CS @ Georgia Tech</p>
+          <nav className={styles.centerLinks} aria-label="Profile links">
+            {PROFILE_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.centerLink}
+                onMouseEnter={onEnterBtnEnter}
+                onMouseLeave={onEnterBtnLeave}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
 
       {/* Hint */}
       <div
@@ -129,6 +165,18 @@ export function SplitWorld() {
           <span className={styles.hintArrow}>→</span>
         </p>
       </div>
+
+      {/* Scroll cue to the server-rendered work section */}
+      {!isEntering && (
+        <a
+          href="#work"
+          className={styles.scrollCue}
+          onMouseEnter={onEnterBtnEnter}
+          onMouseLeave={onEnterBtnLeave}
+        >
+          Selected work ↓
+        </a>
+      )}
 
       {/* Back button */}
       <a
@@ -273,22 +321,19 @@ export function SplitWorld() {
                 <div className={styles.termDot} />
                 <div className={styles.termDot} />
                 <div className={styles.termDot} />
-                <span className={styles.termTitle}>rikki ~ portfolio</span>
+                <span className={styles.termTitle}>rikki ~ featured</span>
               </div>
               <div className={styles.terminalBody}>
                 <span className={styles.termLine}>
                   <span className={styles.termPrompt}>~ </span>
-                  <span className={styles.termCmd}>npm run dev</span>
+                  <span className={styles.termCmd}>ls featured/</span>
                 </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termOut}>▶ Next.js 15 ready</span>
-                </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termOut}>▶ Supabase connected</span>
-                </span>
-                <span className={styles.termLine}>
-                  <span className={styles.termSuccess}>✓ localhost:3000</span>
-                </span>
+                {FEATURED.map((proj) => (
+                  <span key={proj.slug} className={styles.termProject}>
+                    <span className={styles.termProjectName}>▶ {proj.title}</span>
+                    <span className={styles.termOut}>{proj.tagline}</span>
+                  </span>
+                ))}
                 <span className={styles.termLine}>
                   <span className={styles.termPrompt}>~ </span>
                   <span className={styles.termCursor} />
@@ -301,7 +346,7 @@ export function SplitWorld() {
               Devel&shy;oper
               <em>through the code</em>
             </h2>
-            <p className={styles.devSub}>Next.js · TypeScript · Supabase · Stripe</p>
+            <p className={styles.devSub}>Java · Spring Boot · React · TypeScript · PostgreSQL</p>
             <a
               href="/projects"
               className={styles.enterBtnDev}
