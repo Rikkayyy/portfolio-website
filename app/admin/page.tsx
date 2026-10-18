@@ -34,16 +34,18 @@ export default async function AdminPage() {
     .order('display_order', { ascending: true });
 
   // Sort photos within each publication
-  const publicationsWithSortedPhotos = (publications ?? []).map((pub: any) => ({
+  const publicationsWithSortedPhotos: PublicationWithPhotos[] = (
+    (publications ?? []) as PublicationWithPhotos[]
+  ).map((pub) => ({
     ...pub,
-    photos: (pub.photos ?? []).sort((a: any, b: any) => a.display_order - b.display_order),
-  })) as PublicationWithPhotos[];
+    photos: (pub.photos ?? []).sort((a, b) => a.display_order - b.display_order),
+  }));
 
   const pageViews = await getPageViews();
 
   return (
     <AdminPanel
-      projects={(projects ?? []) as any}
+      projects={(projects ?? []) as Project[]}
       publications={publicationsWithSortedPhotos}
       pageViews={pageViews}
       userEmail={user.email ?? ''}

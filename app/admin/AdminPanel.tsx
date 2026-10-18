@@ -236,7 +236,7 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
                   <div className={styles.itemInfo}>
                     <div className={styles.itemTitle}>
                       {p.title}
-                      {(p as any).visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
+                      {p.visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
                     </div>
                     <div className={styles.itemMeta}>
                       {p.year} &middot; {p.technologies.join(', ')}
@@ -251,9 +251,9 @@ function ProjectsTab({ projects }: { projects: Project[] }) {
                     </button>
                     <button 
                       className={styles.btnSecondary} 
-                      onClick={() => handleToggleVisibility(p.id, (p as any).visible ?? true)}
+                      onClick={() => handleToggleVisibility(p.id, p.visible ?? true)}
                     >
-                      {(p as any).visible === false ? 'Show' : 'Hide'}
+                      {p.visible === false ? 'Show' : 'Hide'}
                     </button>
                     <button className={styles.btnDanger} onClick={() => handleDelete(p.id)}>
                       Delete
@@ -541,6 +541,8 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
                   onChange={(e) => handleFileChange(e.target.files)}
                 />
                 {preview
+                  // Local blob: URL of the selected file; next/image can't optimize it
+                  // eslint-disable-next-line @next/next/no-img-element
                   ? <img src={preview} alt="Preview" className={styles.uploadPreview} />
                   : <p className={styles.dropHint}>Drop image here or click to browse</p>}
               </div>
@@ -618,7 +620,7 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
                     <div className={styles.itemInfo}>
                       <div className={styles.itemTitle}>
                         {pub.title}
-                        {(pub as any).visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
+                        {pub.visible === false && <span style={{ marginLeft: '0.5rem', color: '#999', fontSize: '0.875rem' }}>(Hidden)</span>}
                       </div>
                       <div className={styles.itemMeta}>
                         {pub.year} &middot; {pub.photos.length} photo{pub.photos.length !== 1 ? 's' : ''}
@@ -633,9 +635,9 @@ function GalleryTab({ publications }: { publications: PublicationWithPhotos[] })
                       </button>
                       <button 
                         className={styles.btnSecondary} 
-                        onClick={() => handleTogglePubVisibility(pub.id, (pub as any).visible ?? true)}
+                        onClick={() => handleTogglePubVisibility(pub.id, pub.visible ?? true)}
                       >
-                        {(pub as any).visible === false ? 'Show' : 'Hide'}
+                        {pub.visible === false ? 'Show' : 'Hide'}
                       </button>
                       <button className={styles.btnDanger} onClick={() => handleDeletePub(pub.id)}>
                         Delete
